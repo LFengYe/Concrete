@@ -1,0 +1,16 @@
+{
+    "订单管理": {
+        "订单发布": "page1,pc.do",
+        "订单完成上报": "page1,pc.do"
+    },
+    "基础信息": {
+        "行政区域管理": "page1,pc.do",
+        "厂区管理": "page1,pc.do",
+        "客户管理": "page1,pc.do",
+        "物料管理": "page1,pc.do",
+        "车辆管理": "page1,pc.do",
+        "司机管理": "page1,pc.do",
+        "车辆绑定": "page1,pc.do",
+        "用户管理": "page1,pc.do"
+    }
+}

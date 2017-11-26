@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+        <title>水泥车管家</title>
+        <link rel="stylesheet" href="assets/bootstrap/normalize.css" media="screen" />
+        <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css" media="screen" />
+        <link rel="stylesheet" href="assets/common-css/style.css" media="screen" />
+        <link rel="stylesheet" href="assets/JQueryMenuPlug/JQueryMenuPlug-css.css" media="screen" />
+        <link rel="stylesheet" href="assets/jQueryFormPlug/jQueryFormPlug.css" media="screen" />
+        <link rel="stylesheet" href="assets/jQuerySelectPanel/SelectPanel.css" media="screen" />
+        <link rel="stylesheet" href="assets/JQueryTablePlug/jQueryTablePlug2.css" media="screen" />
+        <link rel="stylesheet" href="assets/TwoHeaderTablePlug/TwoHeaderTable.css" media="screen" />
+        <link rel="stylesheet" href="assets/JqueryPrintPlug/jqueryPrintPlug.css" media="print" />
+        <link rel="stylesheet" href="assets/JqueryPrintCode/jqueryPrintCode.css" media="print" />
+        <!--[if lt IE 9]>
+        <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        <script type="text/javascript" src="assets/jQuery/jquery-1.11.1.min.js" ></script>
+        <script type="text/javascript" src="assets/bootstrap/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="javascript/My97DatePicker/WdatePicker.js"></script>
+        <script type="text/javascript" src="javascript/laypage/laypage.js"></script>
+        <script type="text/javascript" src="javascript/layer/layer.js"></script>
+        <script type="text/javascript" src="javascript/jquery.PrintArea.js"></script>
+        <script type="text/javascript" src="javascript/JsBarcode.all.min.js"></script>
+        <script type="text/javascript" src="javascript/script.js"></script>
+        <script type="text/javascript" src="javascript/require.js"></script>
+        <script type="text/javascript">
+            window.onload = function () {
+                findDimensions();
+            };
+            window.onresize = function () {
+                findDimensions();
+            };
+            function modifyPassLayer() {
+                layer.closeAll();
+                layer.open({
+                    type: 2,
+                    title: "密码修改",
+                    skin: 'layui-layer-rim',
+                    area: ['800px', '360px'],
+                    content: "modify_pass.html",
+                    end: function () {
+                    }
+                });
+            }
+            function displayLayer(type, content, title, callback) {
+                layer.closeAll();
+                layer.open({
+                    type: type,
+                    title: title,
+                    skin: 'layui-layer-rim',
+                    area: ['1000px', '600px'],
+                    content: content,
+                    shadeClose: true,
+                    end: function () {
+                        if (callback) {
+                            callback();
+                        }
+                    }
+                });
+            }
+            function displayMapLayer(type, content, title, callback) {
+                layer.closeAll();
+                layer.open({
+                    type: type,
+                    title: title,
+                    maxmin: true,
+                    skin: 'layui-layer-rim',
+                    area: ['1000px', '600px'],
+                    content: "map_locate.html?content=" + escape(content),
+                    shadeClose: true,
+                    end: function () {
+                        if (callback) {
+                            callback();
+                        }
+                    }
+                });
+            }
+            function displayMapDrawLayer(type, content, contentType, title, callback) {
+                if (typeof content === "object" && contentType === "draw") {
+                    content = content.countyName;
+                }
+                layer.closeAll();
+                layer.open({
+                    type: type,
+                    title: title,
+                    maxmin: true,
+                    skin: 'layui-layer-rim',
+                    area: ['1000px', '600px'],
+                    content: "map_draw.html?content=" + escape(content) + "&contentType=" + contentType,
+                    shadeClose: true,
+                    end: function () {
+                        //console.log(callback);
+                        if (callback) {
+                            callback($("#polygonName").val(), $("#polygonPath").val());
+                        }
+                    }
+                });
+            }
+            function displayPhotoLayer(id) {
+                layer.closeAll();
+                layer.open({
+                    type: 1,
+                    title: false,
+                    closeBtn: 0,
+                    area: ['480px', '640px'],
+                    skin: 'layui-layer-nobg', //没有背景色
+                    shadeClose: true,
+                    content: $('#' + id)
+                });
+            }
+        </script>
+        <style type="text/css" id="print_code_style">
+            .div_code_table{display: table;width: 250px;text-align: left;border: 0px solid;margin: 0;font-size: 11pt;}
+            .div_code_row{display: table-row;word-break: keep-all;white-space: nowrap;font-size: 11pt;}
+            .div_code_cell{display:block;float: left;border: 0px solid;height: 20px;line-height: 20px;font-size: 11pt;}
+            .div_code_cell_img{display:block;border: 0px solid;width: 200px;text-align: center;font-size: 11pt;}
+        </style>
+        <style type="text/css" id="print_table_style">
+            .div_table_2{display: table;width: 90%;text-align: center;border-top: 1px solid;border-right: 1px solid;margin: 0px;padding: 0px;}
+            .div_table_2 .col{display: inline-block;text-align: center;font-size: 14px;}
+            .div_table_2 .col ul{margin: 0px;padding: 0px;list-style-type: none;}
+            .div_table_2 .col ul li{text-align: center;height: 20px;line-height: 20px;border-top: 1px solid;white-space:nowrap;}
+            .div_table_2 .div_row{display: table-row;clear: both;}
+            .div_table_2 .div_cell{display: table-cell;float: left;line-height: 20px;border-bottom: 1px solid;white-space: nowrap;}
+            .div_table_2 .div_cell img{float: left;width: 120px;display: inline;}
+            .div_table_2 .div_cell .cell_separate{display: inline-block;height: 20px;line-height: 20px;width: 1px;border-left: 1px solid;float: right;}
+            .div_table_2 .div_cell .cell_start{display: inline-block;height: 20px;line-height: 20px;width: 1px;border-left: 1px solid;float: left;}
+            .div_table_2 .div_cell[flag='title']{height: 40px;line-height: 40px;font-weight: bold;font-size: x-large;}
+            .div_table_2 .div_cell[flag='title'] .cell_separate{display: inline-block;height: 40px;line-height: 40px;width: 1px;border-left: 1px solid;float: right;}
+            .div_table_2 .div_cell[flag='title'] .cell_start{display: inline-block;height: 40px;line-height: 40px;width: 1px;border-left: 1px solid;float: left;}
+            .div_table_2 .div_cell_double{height: 40px;line-height: 40px;}
+        </style>
+    </head>
+    <body>
+        <!--头部-->
+        <div class="container-fluid text-left wc-header no_print">
+            <!-- <h3>物流睿邦信息管理系统</h3> -->
+        </div>
+
+        <div class="container-fluid wc-content no_print">
+            <div class="row">
+                <div class="col-xs-4 col-sm-4 col-md-3 col-lg-2">
+                    <div class="wc-menu"></div>
+                </div>
+                <div class="col-xs-8 col-sm-8 col-md-9 col-lg-10">
+                    <div class="wc-page">
+                        <!--导航菜单-->
+                        <div class="wc-nav">
+                            <ul class="nav left-nav hidden">
+                            </ul>
+                            <ul class="nav right-nav " role="tablist">
+                                <li role="presentation"><a href="javascript:modifyPassLayer();" title="修改密码"><span class="glyphicon glyphicon-user"></span></a></li>
+                                <li role="presentation"><a href=""><span class="glyphicon glyphicon-home"></span></a></li>
+                                <li role="presentation"><a href="login.html" title="切换用户"><span class="glyphicon glyphicon-refresh"></span></a></li>
+                            </ul>
+                        </div>
+                        <!--指示器-->
+                        <div class="wc-route">
+                            <ol class="breadcrumb">
+                            </ol>
+                        </div>
+                        <!--page1-->
+                        <div id="page1" style="display: none;" class="page">
+                            <div class="page1-container">
+                                <div class="page1-input-box">
+                                    <!--动态添加-->
+                                </div>
+                                <div class="page1-button-area">
+                                    <!--<button class="button btn btn-info" id="page1-add">添加</button>
+                                    <button class="button btn btn-info" id="page1-update">修改</button>
+                                    <button class="button btn btn-info" id="page1-delete">删除</button>
+                                    <button class="button btn btn-info" id="page1-submit">提交</button>
+                                    <button class="button btn btn-info" id="page1-import">导入</button>
+                                    <button class="button btn btn-info" id="page1-export">导出</button>
+                                    <button class="button btn btn-info" id="page1-disable">加入黑名单</button>
+                                    <button class="button btn btn-info" id="page1-enable">移除黑名单</button>-->
+                                </div>
+                                <div class="page1-table">
+                                    <div class="page1-show-table">
+                                        <!--动态添加-->
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!--page2-->
+                        <div id="page2" style="display: none;" class="page">
+                            <div class="page2-container">
+                                <div class="page2-main-table">
+                                    <div class="wc-page2-form wc-form ">
+                                        <div class="wc-group">
+                                            <label>关键字</label>
+                                            <input type="text" name="keywords" class="wc-control" placeholder="请输入关键词">
+                                        </div>
+                                        <div class="wc-group">
+                                            <label>起始日期</label>
+                                            <input type="text" name="startTime" class="wc-control start-time" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss'})"/>
+                                        </div>
+                                        <div class="wc-group">
+                                            <label>终止日期</label>
+                                            <input type="text" name="endTime" class="wc-control end-time" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss'})">
+                                        </div>
+                                        <button class="page2-query">查询</button>
+                                        <button class="page2-queryHistory">往期查询</button>
+                                        <div class="page2-history checkbox"><label><input type="checkbox"/>查询历史记录</label></div>
+                                        <button class="page2-addItem" style="display: inline-block">添加</button>
+                                        <button class="page2-deleteItem" style="display: inline-block">删除</button>
+                                        <button class="page2-finishItem" style="display: inline-block">完成</button>
+                                        <button class="page2-printItem" style="display: inline-block">打印</button>
+                                    </div>
+                                    <div class="page2-show-table"><!--动态添加--></div>
+                                </div>
+                                <div class="page2-detail-list">
+                                    <div class="page2-main-input-box">
+                                        <!--动态添加-->
+                                    </div>
+                                    <div class="page2-button-area">
+                                        <button class="button btn" id="page2-submit">保存</button>
+                                        <button class="button btn" id="page2-confirm">确认</button>
+                                        <button class="button btn" id="page2-audit">审核</button>
+                                        <button class="button btn" id="page2-inspection">检验</button>
+                                        <button class="button btn" id="page2-return">返回</button>
+                                    </div>
+                                    <div class="page2-child-input-box">
+                                        <!--动态添加-->
+                                    </div>
+                                    <div class="page2-button-area">
+                                        <button class="button btn" id="page2-add">添加</button>
+                                        <button class="button btn" id="page2-modify">修改</button>
+                                        <button class="button btn" id="page2-cancel">删除</button>
+                                        <button class="button btn" id="page2-print">打印</button>
+                                        <button class="button btn" id="page2-printPatch" style="display: none;">补签</button>
+                                        <button class="button btn" id="page2-auditItem">确认</button>
+                                        <button class="button btn" id="page2-import">导入</button>
+                                        <button class="button btn" id="page2-export" style="display: none;">导出</button>
+                                    </div>
+                                    <div class="page2-show-table">
+                                        <!--动态添加-->
+                                    </div>
+                                </div>	
+                            </div>
+                        </div>
+                        <!--page3-->
+                        <div id="page3" style="display: none;" class="page">
+                            <div class="page3-container">
+                                <div class="page3-main-table">
+                                    <div class="wc-form wc-page3-form">
+                                        <div class="wc-group">
+                                            <label>部品状态</label>
+                                            <input type="hidden" name="partStatus" class="wc-control" value="良品">
+                                            <select id="partStatusSelect">
+                                                <option>良品</option>
+                                                <option>不良品</option>
+                                                <option>待检品</option>
+                                                <option>返修品</option>
+                                            </select>
+                                        </div>
+                                        <div class="wc-group">
+                                            <label>关键字</label>
+                                            <input type="text" name="keywords" class="wc-control keywords" placeholder="请输入关键词">
+                                        </div>
+                                        <div class="wc-group">
+                                            <label>起始日期</label>
+                                            <input type="text" name="startTime" class="wc-control start-time" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss'})">
+                                        </div>
+                                        <div class="wc-group">
+                                            <label>终止日期</label>
+                                            <input type="text" name="endTime" class="wc-control end-time" onfocus="WdatePicker({dateFmt: 'yyyy-MM-dd HH:mm:ss'})">
+                                        </div>
+                                        <input type="hidden" name="jzyMonth" class="wc-control jzyMonth" value="">
+                                        <button class="page3-query">查询</button>
+                                        <button class="page3-queryHistory">往期查询</button>
+                                        <button class="page3-export">导出</button>
+                                    </div>
+                                    <div class="page3-show-table"><!--动态添加--></div>
+                                    <div class="text-center">
+                                        <nav>
+                                            <ul class="pagination page3-pagination">
+                                                <li><a class="page3-left">&laquo;</a></li>
+                                                <li><a class="page3-right">&raquo;</a></li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                </div>
+
+                                <div class="page3-detail-list">
+                                    <div class="page3-main-input-box">
+                                        <!--动态添加-->
+                                    </div>
+                                    <div class="page3-button-area">
+                                        <button class="btn btn-info page3-return">返回</button>
+                                    </div>
+
+                                    <div class="page3-show-table">
+                                        <!--动态添加-->
+                                    </div>
+                                </div>
+
+                                <div class="page3-third-list">
+                                    <div class="page3-main-input-box">
+                                        <!--动态添加-->
+                                    </div>
+                                    <div class="page3-button-area">
+                                        <button class="btn btn-info page3-return">返回</button>
+                                    </div>
+
+                                    <div class="page3-show-table">
+                                        <!--动态添加-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--打印区域-->
+        <div class="print_area content_hidden" id="print_area"></div>
+
+        <div id="code_img_div" class="content_hidden"><img alt="条码" src="" class="div_code_cell_img content_hidden"/></div>
+
+        <!--弹出框回写数据-->
+        <div class="no_print content_hidden">
+            <input type="hidden" id="polygonName" />
+            <input type="hidden" id="polygonPath" />
+        </div>
+
+        <script type="text/javascript" src="assets/JQueryMenuPlug/JQueryMenuPlug-js.js" ></script>
+        <script type="text/javascript" src="assets/jQuerySelectPanel/jQuerySelectPanel-js.js" ></script>
+        <script type="text/javascript" src="assets/jQueryFormPlug/jQueryFormPlug.js" ></script>
+        <script type="text/javascript" src="assets/JQueryTablePlug/jQueryTablePlug2.js" ></script>
+        <script type="text/javascript" src="assets/TwoHeaderTablePlug/chromatable.js" ></script>
+        <script type="text/javascript" src="assets/TwoHeaderTablePlug/TwoheaderTable.js" ></script>
+        <script type="text/javascript" src="assets/JqueryPrintPlug/jqueryPrintPlug.js" ></script>
+        <script type="text/javascript" src="assets/JqueryPrintCode/jqueryPrintCode.js" ></script>
+
+        <script type="text/javascript" src="assets/common-js/common.js" ></script>
+        <script type="text/javascript" src="assets/common-js/mobile.js" ></script>		
+        <script type="text/javascript" src="assets/common-js/page1.js" ></script> 
+        <script type="text/javascript" src="assets/common-js/page2.js" ></script>
+        <script type="text/javascript" src="assets/common-js/page3.js" ></script>
+
+        <script type="text/javascript" language="javascript" src="assets/JqueryPrintCode/LodopFuncs.js"></script>
+        <object  id="LODOP_OB" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA" width=0 height=0> 
+            <embed id="LODOP_EM" type="application/x-print-lodop" width=0 height=0></embed>
+        </object>
+
+        <OBJECT id=factory height=0 width=0 classid=CLSID:8856F961-340A-11D0-A96B-00C04FD705A2></OBJECT> 
+    </body>
+</html>

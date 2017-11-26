@@ -1,0 +1,21 @@
+{
+    "control": {
+        "userID": "用户ID,hidden",
+        "userName": "用户名称,string,10",
+        "userLoginName": "登录名,string,32",
+        "userPassword": "登录密码,string,64",
+        "userType": "用户类型,select,管理员,制单员"
+    },
+    "mustwrite": ["userName", "userLoginName", "userPassword"],
+    "unique": ["userLoginName"],
+    "primary": "userID",
+    "operator": ["add", "update", "delete", "submit", "import", "export"],
+    "operatorName": ["添加", "修改", "删除", "提交", "导入", "导出"],
+    "titles": {
+        "userID": "用户ID,20%",
+        "userName": "用户名称,20%",
+        "userLoginName": "登录名,20%",
+        "userPassword": "登录密码,20%",
+        "userType": "用户类型,20%"        
+    }
+}

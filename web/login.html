@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+        <title>水泥车管家</title>
+        <link rel="stylesheet" href="assets/bootstrap/normalize.css" />
+        <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css" media="screen" />
+        <!--<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css"/>-->
+        <style>
+            html,body{
+                height: 100%;
+            }
+            .wc-container{
+                height: 100%;
+                background: -webkit-linear-gradient(200deg,white, blue); /* Safari 5.1 - 6.0 */
+                background: -o-linear-gradient(200deg,white, blue); /* Opera 11.1 - 12.0 */
+                background: -moz-linear-gradient(200deg,white, blue); /* Firefox 3.6 - 15 */
+                background: linear-gradient(200deg,white, blue); /* 标准的语法 */
+
+            }
+            .wc-login{
+                margin-top: 100px;
+                padding: 20px;
+                background-color: white;
+                border: 1px solid #CCCCCC;
+                border-radius: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container wc-container">
+            <div class="row">
+                <div class="col-xs-8  col-xs-offset-2">
+                    <div class="wc-login">
+                        <div class="form-group">
+                            <label>用户名:</label>
+                            <input type="text" class="form-control" id="loginUserName" placeholder="UserName">
+                        </div>
+                        <div class="form-group">
+                            <label>密码:</label>
+                            <input type="password" class="form-control" id="loginPassword"  placeholder="Password">
+                        </div>
+                        <div class="form-group hidden">
+                            <label>登录类型:</label>
+                            <select class="form-control" id="loginType">
+                                <option selected="selected" value="0">员工登录</option>
+                                <option value="1">平台登录</option>
+                                <option value="2">客户登录</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-success btn-block" id="loginBtn">login</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript" src="assets/jQuery/jquery-1.11.1.min.js" ></script>
+        <script type="text/javascript" src="assets/bootstrap/js/bootstrap.min.js" ></script>
+        <script type="text/javascript" src="assets/common-js/common.js" ></script>
+        <script type="text/javascript" src="javascript/JSON-js-master/json2.js" ></script>
+        <script>
+            //用户将用户名密码填写完整后登录系统   如果登陆成功   则localStorage的isLogin置为true,并将返回的菜单数据保存在localStorage的menuDatas中   
+//            $("#loginBtn").click();
+            window.onload = function () {
+                $("#loginBtn").bind("click", function () {
+                    loginSubmit();
+                });
+                $("body").bind("keyup", function (event) {
+                    if (event.keyCode === 13) {
+                        loginSubmit();
+                    }
+                });
+            };
+
+            function checkForm() {
+                if ($.trim($("#loginUserName").val()) === "") {
+                    $("#loginUserName").focus();
+                    alert("用户名不能为空！");
+                    return false;
+                }
+                if ($("#loginPassword").val() === "") {
+                    $("#loginPassword").focus();
+                    alert("密码不能为空！");
+                    return false;
+                }
+                return true;
+            }
+
+            function loginSubmit() {
+                if (checkForm()) {
+                    var operatetion = ["userLogin", "login", "driverLogin"];
+                    var loginType = $("#loginType").val();
+                    var loginUser = $("#loginUserName").val();
+                    var pswd = $("#loginPassword").val();
+                    if (loginUser !== '' && pswd !== '') {
+                        var obj = new Object();
+                        obj.module = "userLogin";
+                        obj.operation = operatetion[loginType];
+                        obj.username = loginUser;
+                        obj.password = pswd;
+                        obj.type = "pc";
+                        //登录
+                        $.ajax({
+                            type: "post",
+                            url: "/Concrete/action.do",
+                            data: JSON.stringify(obj),
+                            dataType: "json",
+                            success: function (data) {
+                                if (data.status !== 0) {
+                                    alert(data.message);
+                                } else {
+                                    localStorage.setItem("isLogin", "true");
+                                    localStorage.setItem("loginType", operatetion[loginType]);
+                                    localStorage.setItem('menuDatas', data.data);
+                                    location = "index.html";
+                                }
+                            }
+                        });
+                    } else {
+                        alert("请将用户名及密码填写完整！");
+                        return false;
+                    }
+                }
+            }
+        </script>
+    </body>
+</html>

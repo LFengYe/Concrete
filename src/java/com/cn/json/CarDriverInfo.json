@@ -1,0 +1,21 @@
+{
+    "control": {
+        "carNO": "车牌号,hidden",
+        "driverName": "司机姓名,hidden",
+        "carID": "车辆ID,@table:@carNO",
+        "driverID": "司机ID,@table:@driverName",
+        "remark": "备注,string,500"
+    },
+    "mustwrite": ["carID", "driverID"],
+    "unique": [],
+    "primary": "carID,driverID",
+    "operator": ["add", "update", "delete", "submit", "import", "export"],
+    "operatorName": ["添加", "修改", "删除", "提交", "导入", "导出"],
+    "titles": {
+        "carID": "车辆ID,20%",
+        "carNO": "车牌号,20%",
+        "driverID": "司机ID,20%",
+        "driverName": "司机姓名,20%",
+        "remark": "备注,20%"
+    }
+}

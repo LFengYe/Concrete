@@ -1,0 +1,24 @@
+{
+    "control": {
+        "driverID": "司机ID,hidden",
+        "driverName": "司机名称,string,10",
+        "driverLoginName": "登录名,string,32",
+        "driverPassword": "登录密码,string,64",
+        "driverLinsence": "行车证号,string,32",
+        "remark": "备注,500"
+    },
+    "mustwrite": ["driverName", "driverLoginName", "driverPassword"],
+    "unique": ["driverLoginName"],
+    "primary": "driverID",
+    "operator": ["add", "update", "delete", "submit", "import", "export", "disable", "enable"],
+    "operatorName": ["添加", "修改", "删除", "提交", "导入", "导出", "加入黑名单", "移除黑名单"],
+    "titles": {
+        "driverID": "司机ID,10%",
+        "driverName": "司机名称,20%",
+        "driverLoginName": "登录名,20%",
+        "driverPassword": "登录密码,20%",
+        "driverLinsence": "行车证号,20%",
+        "isCanUseName": "是否可用,10%",
+        "remark": "备注,10%"
+    }
+}

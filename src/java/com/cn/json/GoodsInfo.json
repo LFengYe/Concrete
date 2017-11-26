@@ -1,0 +1,17 @@
+{
+    "control": {
+        "goodsName": "物料名称,100",
+        "goodsType": "物料类型,select,水泥,其他",
+        "remark": "备注,500"
+    },
+    "mustwrite": ["goodsName", "goodsType"],
+    "unique": ["goodsName"],
+    "primary": "goodsName",
+    "operator": ["add", "update", "delete", "submit", "import", "export"],
+    "operatorName": ["添加", "修改", "删除", "提交", "导入", "导出"],
+    "titles": {
+        "goodsName": "物料名称,50%",
+        "goodsType": "物料类型,30%",
+        "remark": "备注,20%"
+    }
+}

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>地图</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link type="text/css" rel="stylesheet" href="assets/common-css/style.css" />
+        <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css" type="text/css"/>
+        <link rel="stylesheet" href="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.css">
+
+        <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=G9z0ootWtvxQnRMpqojKjzcI"></script>
+        <script type="text/javascript" src="http://api.map.baidu.com/getscript?v=2.0&ak=G9z0ootWtvxQnRMpqojKjzcI&amp;services=&t=20171031174121"></script>
+        <script type="text/javascript" src="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.js"></script>
+        <script type="text/javascript" src="assets/jQuery/jquery-1.11.1.min.js"></script>
+        <script type="text/javascript" src="assets/bootstrap/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="javascript/script.js"></script>
+        <style>
+            #mapview {
+                width: 100%;
+                height: 100%;
+            }
+            #operate {
+                position: absolute;
+                width: 100%;
+                bottom: 10px;
+                right: 20px;
+                z-index: 999;
+            }
+        </style>
+        <script>
+            var polygon;
+            window.onload = function () {
+                var bmap = new BMap.Map("mapview"); //创建地图实例
+                mapInit(bmap);
+                var content = getUrlParam("content");
+                var contentType = getUrlParam("contentType");
+                if (contentType === "draw") {
+                    drawOperate(bmap, content);
+                }
+                if (contentType === "polygon") {
+                    polygonOperate(bmap, content);
+                }
+            };
+            function drawOperate(mapview, content) {
+                initStation(mapview, content);
+                initDrawManager(mapview);
+                
+                $("#operate").css("display", "block");
+                $("#clear").on('click', function () {
+                    clearPolygon(mapview);
+                });
+                $("#submit").on('click', function () {
+                    if (!$("#polygonName").val()) {
+                        alert("自定义区域名不能为空!");
+                        return;
+                    }
+                    if (!$("#polygonPath").val()) {
+                        alert("自定义区域不能为空!");
+                        return;
+                    }
+                    parent.$("#polygonName").val($("#polygonName").val());
+                    parent.$("#polygonPath").val($("#polygonPath").val());
+                    var index = parent.layer.getFrameIndex(window.name);
+                    parent.layer.close(index);
+                });
+            }
+            function polygonOperate(mapview, content) {
+                $("#operate").css("display", "none");
+                var objs = JSON.parse(content);
+                var pointArray = [];
+                for (var i = 0; i < objs.length; i++) {
+                    var item = objs[i];
+                    var point = new BMap.Point(item.lng, item.lat);
+                    pointArray.push(point);
+                }
+                var styleOptions = {
+                    strokeColor: "red", //边线颜色。
+                    fillColor: "red", //填充颜色。当参数为空时，圆形将没有填充效果。
+                    strokeWeight: 3, //边线的宽度，以像素为单位。
+                    strokeOpacity: 0.8, //边线透明度，取值范围0 - 1。
+                    fillOpacity: 0.1, //填充的透明度，取值范围0 - 1。
+                    strokeStyle: 'solid' //边线的样式，solid或dashed。
+                };
+                var ply = new BMap.Polygon(pointArray, styleOptions);
+                mapview.addOverlay(ply);
+                
+                mapview.setViewport(pointArray);
+            }
+
+            function mapInit(mapview) {
+                mapview.centerAndZoom(new BMap.Point(116.404, 39.915), 15);
+                mapview.setMinZoom(5);
+                mapview.enableScrollWheelZoom(); // 允许滚轮缩放
+                mapview.addControl(new BMap.NavigationControl()); //添加地图的平移缩放控件，可以对地图进行上下左右四个方向的平移和缩放操作。
+                mapview.addControl(new BMap.ScaleControl());//添加地图比例尺控件
+                mapview.addControl(new BMap.OverviewMapControl());//添加缩略地图控件
+                //添加地图类型切换控件(普通街道图，卫星视图，卫星和路网混合视图；去除三维图)
+                mapview.addControl(new BMap.MapTypeControl({
+                    mapTypes: [BMAP_NORMAL_MAP, BMAP_SATELLITE_MAP, BMAP_HYBRID_MAP]
+                }));
+            }
+            function initStation(mapview, content) {
+                var boundary = new BMap.Boundary();
+                boundary.get(content, function (data) {
+                    if (data.boundaries.length > 0) {
+                        var boundaryStr = data.boundaries[0];
+                        var ply = new BMap.Polygon(boundaryStr, {strokeWeight: 2, strokeColor: "#ff0000", fillOpacity: 0.01});
+                        mapview.addOverlay(ply);
+
+                        //设置可以包含该行政区域的地图视野
+                        var boundaryPoints = boundaryStr.split(";");
+                        var pointArray = [];
+                        for (var i = 0; i < boundaryPoints.length; i++) {
+                            var item = boundaryPoints[i].split(",");
+                            var point = new BMap.Point(item[0], item[1]);
+                            pointArray.push(point);
+                        }
+                        mapview.setViewport(pointArray);
+                    } else {
+                        alert('未找到该行政区域!');
+                    }
+                });
+            }
+            function initDrawManager(mapview) {
+                var styleOptions = {
+                    strokeColor: "red", //边线颜色。
+                    fillColor: "red", //填充颜色。当参数为空时，圆形将没有填充效果。
+                    strokeWeight: 3, //边线的宽度，以像素为单位。
+                    strokeOpacity: 0.8, //边线透明度，取值范围0 - 1。
+                    fillOpacity: 0.1, //填充的透明度，取值范围0 - 1。
+                    strokeStyle: 'solid' //边线的样式，solid或dashed。
+                };
+                //实例化鼠标绘制工具
+                var drawingManager = new BMapLib.DrawingManager(mapview, {
+                    isOpen: false, //是否开启绘制模式
+                    enableDrawingTool: true, //是否显示工具栏
+                    drawingToolOptions: {
+                        anchor: BMAP_ANCHOR_TOP_RIGHT, //位置
+                        offset: new BMap.Size(10, 44), //偏离值
+                        drawingModes: [
+                            BMAP_DRAWING_POLYGON
+                        ]
+                    },
+                    polygonOptions: styleOptions //多边形的样式
+                });
+                drawingManager.addEventListener('polygoncomplete', function (overlay) {
+                    if (polygon) {
+                        mapview.removeOverlay(polygon);
+                        polygon = overlay;
+                    } else {
+                        polygon = overlay;
+                    }
+                    $("#polygonPath").val(JSON.stringify(polygon.getPath()));
+                });
+            }
+            function clearPolygon(mapview) {
+                mapview.removeOverlay(polygon);
+                polygon = null;
+                $("#polygonPath").val('');
+            }
+        </script>
+    </head>
+    <body>
+        <input type="hidden" id="polygonPath" />
+        <div id="mapview"></div>
+        <form class="form-horizontal" id="operate">
+            <div class="form-group-sm form-group">
+                <div class="col-sm-3" style="float: right;">
+                    <input type="text" class="form-control" id="polygonName" name="polygonName" placeholder="自定义区域名称"/>
+                    <div class="col-sm-offset-2 function" style="float: right;">
+                        <a class="btn btn-default" id="submit">保存</a>
+                        <a class="btn btn-default" id="clear">清除</a>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group-sm form-group">
+            </div>
+        </form>
+    </body>
+</html>

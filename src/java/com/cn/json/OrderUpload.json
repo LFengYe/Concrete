@@ -1,0 +1,42 @@
+{
+    "control": {
+    },
+    "mustwrite": [],
+    "unique": [],
+    "primary": "orderID,uploadTime",
+    "operator": ["add", "update", "delete", "submit", "import", "export"],
+    "operatorName": ["添加", "修改", "删除", "提交", "导入", "导出"],
+    "titles": {
+        "orderID": "订单ID, 20%",
+        "uploadTime": "上报时间,10%",
+        "uploadLat": "上传纬度,5%",
+        "uploadLng": "上传经度,5%",
+        "uploadAddress": "上传位置,map,20%",
+        "carLat": "车辆纬度,5%",
+        "carLng": "车辆经度,5%",
+        "carAddress": "车辆地址,map,20%",
+        "uploadCarImg": "上传车辆图片,img,10%",
+        "uploadDriverImg": "上传司机图片,img,10%",
+        "uploadStatus": "上报状态,10%",
+        "uploadMessage": "上报信息,20%",
+        "uploadRemark": "备注, 10%"
+    },
+    "dataType": {
+        "uploadAddress": {
+            "type": "map",
+            "content": ["uploadLat", "uploadLng", "carLat", "carLng"]
+        },
+        "carAddress": {
+            "type": "map",
+            "content": ["uploadLat", "uploadLng", "carLat", "carLng"]
+        },
+        "uploadCarImg": {
+            "type": "img",
+            "content": []
+        },
+        "uploadDriverImg": {
+            "type": "img",
+            "content": []
+        }
+    }
+}

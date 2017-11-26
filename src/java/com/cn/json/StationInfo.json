@@ -1,0 +1,29 @@
+{
+    "control": {
+        "stationID": "行政区域ID,hidden",
+        "proviceName": "省名称,10%",
+        "cityName": "市名称,10%",
+        "countyName": "区域名称,10%",
+        "proviceGB": "省GB码,10%",
+        "cityGB": "市GB码,10%",
+        "countyGB": "区域GB码,10%",
+        "alias": "别名,10%",
+        "remark": "备注,string,500"
+    },
+    "mustwrite": ["proviceName", "cityName", "countyName", "countyGB"],
+    "unique": [],
+    "primary": "stationID",
+    "operator": ["add", "update", "delete", "submit", "import", "export"],
+    "operatorName": ["添加", "修改", "删除", "提交", "导入", "导出"],
+    "titles": {
+        "stationID": "行政区域ID,5%",
+        "proviceName": "省名称,10%",
+        "cityName": "市名称,10%",
+        "countyName": "区域名称,10%",
+        "proviceGB": "省GB码,20%",
+        "cityGB": "市GB码,20%",
+        "countyGB": "区域GB码,20%",
+        "alias": "别名,10%",
+        "remark": "备注,10%"
+    }
+}

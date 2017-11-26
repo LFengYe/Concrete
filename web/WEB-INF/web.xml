@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <listener>
+        <listener-class>com.cn.listener.StartInit</listener-class>
+    </listener>
+    <filter>
+        <filter-name>CharactorFilter</filter-name>
+        <filter-class>com.cn.filter.CharactorFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>CharactorFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <servlet>
+        <servlet-name>DataInterface</servlet-name>
+        <servlet-class>com.cn.servlet.DataInterface</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DataInterface</servlet-name>
+        <url-pattern>/action.do</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>AppInterface</servlet-name>
+        <servlet-class>com.cn.servlet.AppInterface</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AppInterface</servlet-name>
+        <url-pattern>/app.do</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>PCInterface</servlet-name>
+        <servlet-class>com.cn.servlet.PCInterface</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PCInterface</servlet-name>
+        <url-pattern>/pc.do</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>UploadFileServlet</servlet-name>
+        <servlet-class>com.cn.servlet.UploadFileServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UploadFileServlet</servlet-name>
+        <url-pattern>/uploadFile.do</url-pattern>
+    </servlet-mapping>
+    
+    <welcome-file-list>
+        <welcome-file>login.html</welcome-file>
+    </welcome-file-list>
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+</web-app>
