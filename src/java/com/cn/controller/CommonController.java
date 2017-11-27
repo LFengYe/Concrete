@@ -918,9 +918,9 @@ public class CommonController {
                 }
             } else if (fieldType.contains("String")) {
                 if (commonResult == null) {
-                    commonResult = "(" + field.getName() + " like '%" + keyWord + "%')";
+                    commonResult = "(" + field.getName() + " like binary '%" + keyWord + "%')";
                 } else {
-                    commonResult += " or " + "(" + field.getName() + " like '%" + keyWord + "%')";
+                    commonResult += " or " + "(" + field.getName() + " like binary '%" + keyWord + "%')";
                 }
             }
         }
@@ -978,9 +978,9 @@ public class CommonController {
                 }
             } else if (fieldType.contains("String")) {
                 if (commonResult == null) {
-                    commonResult = "(" + field.getName() + " like '%" + keyWord + "%')";
+                    commonResult = "(" + field.getName() + " like binary '%" + keyWord + "%')";
                 } else {
-                    commonResult += " or " + "(" + field.getName() + " like '%" + keyWord + "%')";
+                    commonResult += " or " + "(" + field.getName() + " like binary '%" + keyWord + "%')";
                 }
             }
         }
@@ -1063,9 +1063,9 @@ public class CommonController {
                 }
             } else if (fieldType.contains("String")) {
                 if (commonResult == null) {
-                    commonResult = "(" + field.getName() + " like '%" + keyWord + "%')";
+                    commonResult = "(" + field.getName() + " like binary '%" + keyWord + "%')";
                 } else {
-                    commonResult += " or " + "(" + field.getName() + " like '%" + keyWord + "%')";
+                    commonResult += " or " + "(" + field.getName() + " like binary '%" + keyWord + "%')";
                 }
             }
         }

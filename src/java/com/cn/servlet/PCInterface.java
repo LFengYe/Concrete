@@ -608,6 +608,8 @@ public class PCInterface extends HttpServlet {
                     switch (operation) {
                         case "create": {
                             json = interfaceController.createOperate(15, "view", "com/cn/json/", "com.cn.bean.", "OrderInfo", "OrderID", DatabaseOpt.DATA);
+                            json = Units.insertStr(json, "\\\"订单编号\\", ",@CON-" + Units.getNowTimeNoSeparator());
+                            json = Units.insertStr(json, "\\\"开票时间\\", ",@" + Units.getNowTime());
                             break;
                         }
                         case "request_page": {

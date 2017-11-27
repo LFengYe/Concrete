@@ -59,7 +59,6 @@ public class AppInterface extends HttpServlet {
                 uri.lastIndexOf("."));
         String json = null;
         InterfaceController interfaceController = new InterfaceController();
-        DatabaseOpt opt = new DatabaseOpt();
         //logger.info(Units.getIpAddress(request) + "accept:" + subUri + ",time:" + (new Date().getTime()));
 
         try {
@@ -199,7 +198,7 @@ public class AppInterface extends HttpServlet {
 
     private String driverFinishOrder(CarInfo carInfo, JSONObject paramsJson, String servletPath) throws Exception {
         CommonController commonController = new CommonController();
-        String whereCase = "carNO = " + carInfo.getCarNO() + " and OrderStatus = 0";
+        String whereCase = "carNO = '" + carInfo.getCarNO() + "' and OrderStatus = 0";
         List<Object> res = commonController.dataBaseQuery("view", "com.cn.bean.", "OrderInfo", "*", whereCase, 1, 1, "OrderID", 1, DatabaseOpt.DATA);
         if (res != null && res.size() > 0) {
             OrderInfo orderInfo = (OrderInfo) res.get(0);

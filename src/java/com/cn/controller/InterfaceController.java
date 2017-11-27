@@ -169,9 +169,8 @@ public class InterfaceController {
         } else {
             whereSql = whereSql + (Units.strIsEmpty(whereCase) ? "" : " and " + whereCase);
         }
-//        System.out.println("whereSql:" + whereSql);
+        //System.out.println("whereSql:" + whereSql);
         List<Object> list = commonController.dataBaseQuery(type, beanPackage, tableName, "*", whereSql, pageSize, pageIndex, orderField, 0, conn);
-//        System.out.println("list size:" + list.size());
         if (list != null && list.size() > 0) {
             StringBuffer buffer = new StringBuffer(result);
             buffer.insert(buffer.lastIndexOf("}"), "\"datas\":" + JSONObject.toJSONString(list, Units.features));
