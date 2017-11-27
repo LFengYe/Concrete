@@ -26,7 +26,7 @@ public class CustomerInfo {
     private String factoryName;
     @FieldDescription(description = "行政区域编码", operate = "import")
     private String countyGB;
-    @FieldDescription(description = "行政区域")
+    @FieldDescription(description = "行政区域", operate = "display")
     private String destinationStation;
     @FieldDescription(description = "自定义区域")
     private String polygonName;

@@ -22,6 +22,8 @@ public class FactoryInfo {
 
     @FieldDescription(description = "工厂名称", operate = "import")
     private String factoryName;
+    @FieldDescription(description = "公司名称", operate = "import")
+    private String companyName;
     @FieldDescription(description = "备注", operate = "import")
     private String remark;
 
@@ -39,6 +41,14 @@ public class FactoryInfo {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
     
 }

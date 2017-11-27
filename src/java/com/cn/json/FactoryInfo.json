@@ -1,6 +1,7 @@
 {
     "control": {
         "factoryName": "工厂名称,string,20",
+        "companyName": "公司名称,string,50",
         "remark": "备注,string,500"
     },
     "mustwrite": ["factoryName"],
@@ -9,7 +10,8 @@
     "operator": ["add", "update", "delete", "submit", "import", "export"],
     "operatorName": ["添加", "修改", "删除", "提交", "导入", "导出"],
     "titles": {
-        "factoryName": "工厂名称,50%",
-        "remark": "备注,50%"
+        "factoryName": "工厂名称,40%",
+        "companyName": "公司名称,40%",
+        "remark": "备注,20%"
     }
 }

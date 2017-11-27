@@ -14,7 +14,7 @@
     "operator": ["add", "update", "delete", "submit", "import", "export"],
     "operatorName": ["添加", "修改", "删除", "提交", "导入", "导出"],
     "titles": {
-        "customerName": "目的地,20%",
+        "customerName": "客户名称,20%",
         "factoryName": "工厂名称,20%",
         "countyGB": "行政区域编码,20%",
         "destinationStation": "行政区域,20%",

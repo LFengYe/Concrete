@@ -29,6 +29,7 @@ import org.apache.log4j.Logger;
  * @author LFeng
  */
 public class PCInterface extends HttpServlet {
+
     private static final Logger logger = Logger.getLogger(PCInterface.class);
 
     /**
@@ -103,7 +104,7 @@ public class PCInterface extends HttpServlet {
                  * ***************************************基础信息管理**************************************
                  */
                 //<editor-fold desc="基础信息管理">
-                
+
                 //<editor-fold desc="行政区域管理">
                 case "行政区域管理": {
                     switch (operation) {
@@ -135,7 +136,7 @@ public class PCInterface extends HttpServlet {
                     break;
                 }
                 //</editor-fold>
-                
+
                 //<editor-fold desc="目的地管理">
                 case "目的地管理": {
                     switch (operation) {
@@ -177,7 +178,7 @@ public class PCInterface extends HttpServlet {
                     break;
                 }
                 //</editor-fold>
-                
+
                 //<editor-fold desc="厂区管理">
                 case "厂区管理": {
                     switch (operation) {
@@ -209,16 +210,16 @@ public class PCInterface extends HttpServlet {
                     break;
                 }
                 //</editor-fold>
-                
+
                 //<editor-fold desc="客户管理">
                 case "客户管理": {
                     switch (operation) {
                         case "create": {
-                            json = interfaceController.createOperate(15, "table", "com/cn/json/", "com.cn.bean.", "CustomerInfo", "CustomerName", DatabaseOpt.DATA);
+                            json = interfaceController.createOperate(15, "view", "com/cn/json/", "com.cn.bean.", "CustomerInfo", "CustomerName", DatabaseOpt.DATA);
                             break;
                         }
                         case "request_page": {
-                            json = interfaceController.queryOperate("com.cn.bean.", "table", "CustomerInfo", "CustomerName", datas, rely, true, DatabaseOpt.DATA, pageSize, pageIndex);
+                            json = interfaceController.queryOperate("com.cn.bean.", "view", "CustomerInfo", "CustomerName", datas, rely, true, DatabaseOpt.DATA, pageSize, pageIndex);
                             break;
                         }
                         case "import": {
@@ -258,7 +259,7 @@ public class PCInterface extends HttpServlet {
                     break;
                 }
                 //</editor-fold>
-                
+
                 //<editor-fold desc="物料管理">
                 case "物料管理": {
                     switch (operation) {
@@ -290,7 +291,7 @@ public class PCInterface extends HttpServlet {
                     break;
                 }
                 //</editor-fold>
-                
+
                 //<editor-fold desc="车辆管理">
                 case "车辆管理": {
                     switch (operation) {
@@ -404,7 +405,7 @@ public class PCInterface extends HttpServlet {
                     break;
                 }
                 //</editor-fold>
-                
+
                 //<editor-fold desc="司机管理">
                 case "司机管理": {
                     switch (operation) {
@@ -518,7 +519,7 @@ public class PCInterface extends HttpServlet {
                     break;
                 }
                 //</editor-fold>
-                
+
                 //<editor-fold desc="车辆绑定">
                 case "车辆绑定": {
                     switch (operation) {
@@ -567,7 +568,7 @@ public class PCInterface extends HttpServlet {
                     break;
                 }
                 //</editor-fold>
-                
+
                 //<editor-fold desc="用户管理">
                 case "用户管理": {
                     switch (operation) {
@@ -599,9 +600,8 @@ public class PCInterface extends HttpServlet {
                     break;
                 }
                 //</editor-fold>
-                
+
                 //</editor-fold>
-                
                 //<editor-fold desc="订单管理">
                 //<editor-fold desc="订单发布">
                 case "订单发布": {
@@ -617,7 +617,8 @@ public class PCInterface extends HttpServlet {
                             break;
                         }
                         case "import": {
-                            json = interfaceController.importData("com.cn.bean.", "OrderInfo", importPath + fileName, DatabaseOpt.DATA);
+                            //json = interfaceController.importData("com.cn.bean.", "OrderInfo", importPath + fileName, DatabaseOpt.DATA);
+                            json = Units.objectToJson(-1, "功能已禁用", null);
                             break;
                         }
                         case "exportTemplate": {
@@ -628,41 +629,24 @@ public class PCInterface extends HttpServlet {
                             json = interfaceController.exportData(filePath, servletPath, "com.cn.bean.", "OrderInfo", (ArrayList<Object>) interfaceController.queryData("com.cn.bean.", "table", "OrderInfo", "OrderID", datas, DatabaseOpt.DATA, Integer.MAX_VALUE, 1));
                             break;
                         }
-                        case "request_table": {
-                            if (target.compareToIgnoreCase("carID") == 0) {
-                                String[] keys = {"carID", "carNO"};
-                                String[] keysName = {"车辆ID", "车牌号"};
-                                int[] keysWidth = {50, 50};
-                                String[] fieldsName = {"carID", "carNO"};
-                                String whereCase = "CarID not in (select CarID from tblOrderInfo where OrderStatus = 0)";
-                                json = interfaceController.queryOperate(target, "com.cn.bean.", "table", "CarInfo", "CarID", datas, rely, whereCase, true, DatabaseOpt.DATA, pageSize, pageIndex, keys, keysName, keysWidth, fieldsName);
-                            }
-                            if (target.compareToIgnoreCase("driverID") == 0) {
-                                String[] keys = {"driverID", "driverName"};
-                                String[] keysName = {"司机ID", "司机名称"};
-                                int[] keysWidth = {50, 50};
-                                String[] fieldsName = {"driverID", "driverName"};
-                                String whereCase = "DriverID not in (select DriverID from tblOrderInfo where OrderStatus = 0)";
-                                json = interfaceController.queryOperate(target, "com.cn.bean.", "view", "CarDriverInfo", "CarID", datas, rely, whereCase, true, DatabaseOpt.DATA, pageSize, pageIndex, keys, keysName, keysWidth, fieldsName);
-                            }
-                            if (target.compareToIgnoreCase("destinationID") == 0) {
-                                String[] keys = {"destinationID", "destinationName", "countyGB", "destinationStation"};
-                                String[] keysName = {"目的地ID", "目的地", "行政区域编码", "行政区域"};
-                                int[] keysWidth = {30, 20, 20, 30};
-                                String[] fieldsName = {"destinationID", "destinationName", "countyGB", "destinationStation"};
-                                json = interfaceController.queryOperate(target, "com.cn.bean.", "table", "DestinationInfo", "DestinationID", datas, rely, true, DatabaseOpt.DATA, pageSize, pageIndex, keys, keysName, keysWidth, fieldsName);
-                            }
+                        case "enable": {
+                            json = interfaceController.batchUpdateField("com.cn.bean.", "OrderInfo", datas, "orderStatus", "1", "data");
                             break;
                         }
                         case "submit": {
-                            json = interfaceController.submitOperate("com.cn.bean.", "OrderInfo", update, add, delete, "data");
+                            json = Units.objectToJson(-1, "功能已禁用", null);
+                            //json = interfaceController.submitOperate("com.cn.bean.", "OrderInfo", update, add, delete, "data");
+                            break;
+                        }
+                        case "request_table": {
+                            json = Units.objectToJson(-1, "数据为空", null);
                             break;
                         }
                     }
                     break;
                 }
                 //</editor-fold>
-                
+
                 //<editor-fold desc="订单完成上报">
                 case "订单完成上报": {
                     switch (operation) {
@@ -709,6 +693,50 @@ public class PCInterface extends HttpServlet {
                 out.close();
             }
         }
+    }
+
+    private String orderRequestTable(String target, String datas, String rely, int pageIndex, int pageSize) throws Exception {
+        String json = null;
+        InterfaceController interfaceController = new InterfaceController();
+        if (target.compareToIgnoreCase("carNO") == 0) {
+            String[] keys = {"carID", "carNO"};
+            String[] keysName = {"车辆ID", "车牌号"};
+            int[] keysWidth = {50, 50};
+            String[] fieldsName = {"carID", "carNO"};
+            String whereCase = "CarID not in (select CarID from tblOrderInfo where OrderStatus = 0)";
+            json = interfaceController.queryOperate(target, "com.cn.bean.", "table", "CarInfo", "CarID", datas, rely, whereCase, true, DatabaseOpt.DATA, pageSize, pageIndex, keys, keysName, keysWidth, fieldsName);
+        }
+        if (target.compareToIgnoreCase("driverID") == 0) {
+            String[] keys = {"driverID", "driverName"};
+            String[] keysName = {"司机ID", "司机名称"};
+            int[] keysWidth = {50, 50};
+            String[] fieldsName = {"driverID", "driverName"};
+            String whereCase = "DriverID not in (select DriverID from tblOrderInfo where OrderStatus = 0)";
+            json = interfaceController.queryOperate(target, "com.cn.bean.", "view", "CarDriverInfo", "CarID", datas, rely, whereCase, true, DatabaseOpt.DATA, pageSize, pageIndex, keys, keysName, keysWidth, fieldsName);
+        }
+        if (target.compareToIgnoreCase("factoryName") == 0) {
+            String[] keys = {"factoryName", "companyName"};
+            String[] keysName = {"工厂名称", "公司名称"};
+            int[] keysWidth = {50, 50};
+            String[] fieldsName = {"factoryName", "companyName"};
+            json = interfaceController.queryOperate(target, "com.cn.bean.", "table", "FactoryInfo", "FactoryName", datas, rely, true, DatabaseOpt.DATA, pageSize, pageIndex, keys, keysName, keysWidth, fieldsName);
+        }
+        if (target.compareToIgnoreCase("customerName") == 0) {
+            String[] keys = {"customerName", "companyName"};
+            String[] keysName = {"工厂名称", "公司名称"};
+            int[] keysWidth = {50, 50};
+            String[] fieldsName = {"factoryName", "companyName"};
+            json = interfaceController.queryOperate(target, "com.cn.bean.", "table", "FactoryInfo", "FactoryName", datas, rely, true, DatabaseOpt.DATA, pageSize, pageIndex, keys, keysName, keysWidth, fieldsName);
+        }
+        if (target.compareToIgnoreCase("destinationID") == 0) {
+            String[] keys = {"destinationID", "destinationName", "countyGB", "destinationStation"};
+            String[] keysName = {"目的地ID", "目的地", "行政区域编码", "行政区域"};
+            int[] keysWidth = {30, 20, 20, 30};
+            String[] fieldsName = {"destinationID", "destinationName", "countyGB", "destinationStation"};
+            json = interfaceController.queryOperate(target, "com.cn.bean.", "table", "DestinationInfo", "DestinationID", datas, rely, true, DatabaseOpt.DATA, pageSize, pageIndex, keys, keysName, keysWidth, fieldsName);
+        }
+        
+        return json;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

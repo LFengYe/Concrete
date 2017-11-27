@@ -12,6 +12,7 @@ import com.cn.bean.DriverInfo;
 import com.cn.controller.CommonController;
 import com.cn.task.SyncERPData;
 import com.cn.task.SyncGPSData;
+import com.cn.task.SyncGPSStatus;
 import com.cn.util.DatabaseOpt;
 import com.cn.util.RedisAPI;
 import java.sql.Connection;
@@ -32,7 +33,8 @@ import redis.clients.jedis.Transaction;
 public class StartInit implements ServletContextListener {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SyncGPSData.class);
-    private static final int GPS_SYNC_FREQUENCY = 12;
+    private static final int GPS_STATUS_SYNC_FREQUENCY = 10;
+    private static final int GPS_DATA_SYNC_FREQUENCY = 15;
     private static final int ERP_SYNC_FREQUENCY = 30;
     
     //private ScheduledFuture future;
@@ -50,10 +52,11 @@ public class StartInit implements ServletContextListener {
             public ScheduledFuture<?> scheduleWithFixedDelay(Runnable command, long initialDelay, long delay, TimeUnit unit);
              */
             //30分钟执行一次
-            timeOutScheduler.scheduleWithFixedDelay(new SyncGPSData(), 0, GPS_SYNC_FREQUENCY, TimeUnit.MINUTES);
+            timeOutScheduler.scheduleWithFixedDelay(new SyncGPSData(), 0, GPS_DATA_SYNC_FREQUENCY, TimeUnit.MINUTES);
             
-//            timeOutScheduler.scheduleWithFixedDelay(new SyncERPData(), 0, ERP_SYNC_FREQUENCY, TimeUnit.MINUTES);
+            timeOutScheduler.scheduleWithFixedDelay(new SyncERPData(), 0, ERP_SYNC_FREQUENCY, TimeUnit.MINUTES);
             
+            timeOutScheduler.scheduleWithFixedDelay(new SyncGPSStatus(), 0, GPS_STATUS_SYNC_FREQUENCY, TimeUnit.MINUTES);
             LOG.info("启动定时任务成功!");
             
         } catch (Exception ex) {

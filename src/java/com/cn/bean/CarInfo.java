@@ -43,6 +43,12 @@ public class CarInfo {
     private int isCanUse;
     @FieldDescription(description = "是否可用", operate = "display")
     private String isCanUseName;
+    @FieldDescription(description = "GPS定位时间")
+    private String gpsTime;
+    @FieldDescription(description = "是否在线")
+    private int isOnline;
+    @FieldDescription(description = "是否在线", operate = "display")
+    private int isOnlineName;
     @FieldDescription(description = "电子封签")
     private String electronicSeal;
     @FieldDescription(description = "到期时间")
@@ -153,6 +159,22 @@ public class CarInfo {
     public void setMotorcadeName(String motorcadeName) {
         this.motorcadeName = motorcadeName;
     }
+    
+    public int getIsOnline() {
+        return isOnline;
+    }
+
+    public void setIsOnline(int isOnline) {
+        this.isOnline = isOnline;
+    }
+
+    public String getIsOnlineName() {
+        return isOnline == 0 ? "离线" : "在线";
+    }
+
+    public void setIsOnlineName(int isOnlineName) {
+        this.isOnlineName = isOnlineName;
+    }
 
     public boolean isGPSDataChange(String gpsNumber, String motorcadeName, String expireDate) {
         if (Units.strIsEmpty(this.systemNo))
@@ -165,6 +187,14 @@ public class CarInfo {
             return true;
         if (Units.strIsEmpty(this.expiredDate))
             return true;
-        return this.expiredDate.compareToIgnoreCase(expireDate) != 0;
+        return this.expiredDate.compareToIgnoreCase(expireDate) < 0;
+    }
+
+    public String getGpsTime() {
+        return gpsTime;
+    }
+
+    public void setGpsTime(String gpsTime) {
+        this.gpsTime = gpsTime;
     }
 }
