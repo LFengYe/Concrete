@@ -328,13 +328,13 @@ public class AppInterface extends HttpServlet {
      */
     private boolean isArrive(String address, String lat, String lng, CustomerInfo info) {
         boolean isArrive = Units.isAddressContainsAdCode(address, info.getCountyGB());
-        if (isArrive && !Units.strIsEmpty(info.getPolygonPath())) {
+        if (isArrive && !Units.strIsEmpty(info.getDestinationContent())) {
             //目标点
             Point2D.Double point = GeoUtils.buildPoint(Double.valueOf(lat), Double.valueOf(lng));
             //多边形区域
             List<Point2D.Double> polygon = new ArrayList<>();
             
-            JSONArray pathAry = JSONArray.parseArray(info.getPolygonPath());
+            JSONArray pathAry = JSONArray.parseArray(info.getDestinationContent());
             for (int i = 0; i < pathAry.size(); i++) {
                 JSONObject obj = pathAry.getJSONObject(i);
                 Point2D.Double pathPoint = GeoUtils.buildPoint(obj.getDouble(lat), obj.getDouble(lng));

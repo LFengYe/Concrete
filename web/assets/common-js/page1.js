@@ -16,7 +16,9 @@
         IMPORT: "import",
         EXPORT: "export",
         DISABLE: "disable",
-        ENABLE: "enable"
+        ENABLE: "enable",
+        SYNCDATA: "syncdata",
+        SYNCSTATUS: "syncstatus"
     };
     var submitDatas = {
         add: [],
@@ -320,6 +322,26 @@
                 initDOM(module);
             });
             $("#page1-enable").attr("disabled", false);
+        });
+        $("#page1-syncdata").off("click");
+        $("#page1-syncdata").on("click", function (e) {
+            $("#page1-syncdata").attr("disabled", true);
+            ajaxData(OPERATION.SYNCDATA, null, function (data) {
+                initDOM(module);
+            }, function() {
+                initDOM(module);
+            });
+            $("#page1-syncdata").attr("disabled", false);
+        });
+        $("#page1-syncstatus").off("click");
+        $("#page1-syncstatus").on("click", function (e) {
+            $("#page1-syncstatus").attr("disabled", true);
+            ajaxData(OPERATION.SYNCSTATUS, null, function (data) {
+                initDOM(module);
+            }, function() {
+                initDOM(module);
+            });
+            $("#page1-syncstatus").attr("disabled", false);
         });
     }
 

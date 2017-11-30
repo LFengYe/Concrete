@@ -2,11 +2,13 @@
     "control": {
         "destinationStation": "行政区域,hidden",
         "countyName": "区域名称,hidden",
-        "polygonPath": "自定义区域路径,hidden",
+        "destinationContent": "区域内容,hidden",
         "customerName": "客户名称,string,10",
         "factoryName": "工厂名称,@table",
         "countyGB": "行政区域编码,@table:@destinationStation,@countyName",
-        "polygonName": "自定义区域,@mapDraw,@countyName:@polygonPath"
+        "destinationType": "区域类型,select,定点区域,手绘区域",
+        "destinationName": "区域名称,@table,@countyGB,@destinationType:@destinationContent",
+        "remark": "备注,string,500"
     },
     "mustwrite": ["customerName", "factoryName", "countyGB"],
     "unique": [],
@@ -14,16 +16,18 @@
     "operator": ["add", "update", "delete", "submit", "import", "export"],
     "operatorName": ["添加", "修改", "删除", "提交", "导入", "导出"],
     "titles": {
-        "customerName": "客户名称,20%",
-        "factoryName": "工厂名称,20%",
-        "countyGB": "行政区域编码,20%",
+        "customerName": "客户名称,30%",
+        "factoryName": "工厂名称,10%",
+        "countyGB": "行政区域编码,10%",
         "destinationStation": "行政区域,20%",
-        "polygonName": "自定义区域名称,20%"
+        "destinationType": "区域类型,10%",
+        "destinationName": "区域名称,10%",
+        "remark": "备注,10%"
     },
     "dataType": {
-        "polygonName": {
+        "destinationName": {
             "type": "mapPolygon",
-            "content": ["polygonPath"]
+            "content": ["destinationContent"]
         }
     }
 }

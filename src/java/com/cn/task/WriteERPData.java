@@ -22,9 +22,9 @@ import org.apache.log4j.Logger;
  *
  * @author LFeng
  */
-public class SyncERPData implements Runnable {
+public class WriteERPData implements Runnable {
 
-    private static final Logger LOG = Logger.getLogger(SyncERPData.class);
+    private static final Logger LOG = Logger.getLogger(WriteERPData.class);
 
     @Override
     public void run() {
@@ -34,8 +34,7 @@ public class SyncERPData implements Runnable {
         CallableStatement statement = null;
         try {
             conn = opt.getConnection(DatabaseOpt.ORDER);
-            statement = conn.prepareCall("select * from v_XsGPS where VGP_CDate between ? and ?");
-            statement.setString(1, Units.getNowDate() + " 00:00:00");
+            statement = conn.prepareCall("insert into tableName() values(?, ?, ?)");
             statement.setString(2, Units.getNowDate() + " 23:59:59");
             ResultSet set = statement.executeQuery();
             JSONArray addList = new JSONArray();

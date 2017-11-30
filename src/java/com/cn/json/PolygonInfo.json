@@ -1,0 +1,28 @@
+{
+    "control": {
+        "polygonName": "目的地,string,20",
+        "countyGB": "行政区域编码,@table:@destinationStation,@countyName",
+        "countyName": "区域名称,hidden",
+        "polygonPath": "自定义区域,@mapDraw,@countyName"
+    },
+    "mustwrite": ["polygonName","countyGB"],
+    "unique": [],
+    "primary": "polygonName",
+    "operator": ["add","update","delete","submit","import","export"],
+    "operatorName": ["添加","修改","删除","提交","导入","导出"],
+    "titles": {
+        "polygonName": "目的地,30%",
+        "countyGB": "行政区域编码,20%",
+        "countyName": "行政区域,30%",
+        "polygonPath": "自定义区域名称,20%"
+    },
+    "dataType": {
+        "polygonPath": {
+            "type": "mapPolygon",
+            "content": [
+                "polygonPath"
+            ]
+        }
+    }
+}
+    

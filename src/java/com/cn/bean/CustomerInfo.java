@@ -26,12 +26,18 @@ public class CustomerInfo {
     private String factoryName;
     @FieldDescription(description = "行政区域编码", operate = "import")
     private String countyGB;
+    @FieldDescription(description = "行政区域简称", operate = "display")
+    private String countyName;
     @FieldDescription(description = "行政区域", operate = "display")
     private String destinationStation;
-    @FieldDescription(description = "自定义区域")
-    private String polygonName;
-    @FieldDescription(description = "自定义区域路径")
-    private String polygonPath;
+    @FieldDescription(description = "区域类型", operate = "import")
+    private String destinationType;
+    @FieldDescription(description = "区域名称", operate = "import")
+    private String destinationName;
+    @FieldDescription(description = "区域内容")
+    private String destinationContent;
+    @FieldDescription(description = "备注", operate = "import")
+    private String remark;
 
     public String getCustomerName() {
         return customerName;
@@ -57,28 +63,52 @@ public class CustomerInfo {
         this.destinationStation = destinationStation;
     }
 
-    public String getPolygonName() {
-        return polygonName;
-    }
-
-    public void setPolygonName(String polygonName) {
-        this.polygonName = polygonName;
-    }
-
-    public String getPolygonPath() {
-        return polygonPath;
-    }
-
-    public void setPolygonPath(String polygonPath) {
-        this.polygonPath = polygonPath;
-    }
-
     public String getFactoryName() {
         return factoryName;
     }
 
     public void setFactoryName(String factoryName) {
         this.factoryName = factoryName;
+    }
+
+    public String getCountyName() {
+        return countyName;
+    }
+
+    public void setCountyName(String countyName) {
+        this.countyName = countyName;
+    }
+
+    public String getDestinationType() {
+        return destinationType;
+    }
+
+    public void setDestinationType(String destinationType) {
+        this.destinationType = destinationType;
+    }
+
+    public String getDestinationName() {
+        return destinationName;
+    }
+
+    public void setDestinationName(String destinationName) {
+        this.destinationName = destinationName;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public String getDestinationContent() {
+        return destinationContent;
+    }
+
+    public void setDestinationContent(String destinationContent) {
+        this.destinationContent = destinationContent;
     }
     
 }

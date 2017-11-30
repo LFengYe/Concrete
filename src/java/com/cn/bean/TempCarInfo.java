@@ -11,7 +11,7 @@ import com.cn.util.Units;
  *
  * @author LFeng
  */
-public class CarInfo {
+public class TempCarInfo {
 
     private static int recordCount;
 
@@ -48,15 +48,13 @@ public class CarInfo {
     @FieldDescription(description = "是否在线")
     private int isOnline;
     @FieldDescription(description = "是否在线", operate = "display")
-    private String isOnlineName;
+    private int isOnlineName;
     @FieldDescription(description = "电子封签")
     private String electronicSeal;
     @FieldDescription(description = "到期时间")
     private String expiredDate;
     @FieldDescription(description = "临时车辆")
-    private boolean isTemp;
-    @FieldDescription(description = "临时车辆", operate = "display")
-    private String isTempName;
+    private int isTemp;
     @FieldDescription(description = "到期时间")
     private String tempExpiredTime;
     @FieldDescription(description = "备注")
@@ -178,7 +176,7 @@ public class CarInfo {
         return isOnline == 0 ? "离线" : "在线";
     }
 
-    public void setIsOnlineName(String isOnlineName) {
+    public void setIsOnlineName(int isOnlineName) {
         this.isOnlineName = isOnlineName;
     }
 
@@ -204,11 +202,11 @@ public class CarInfo {
         this.gpsTime = gpsTime;
     }
 
-    public boolean getIsTemp() {
+    public int getIsTemp() {
         return isTemp;
     }
 
-    public void setIsTemp(boolean isTemp) {
+    public void setIsTemp(int isTemp) {
         this.isTemp = isTemp;
     }
 
@@ -218,13 +216,5 @@ public class CarInfo {
 
     public void setTempExpiredTime(String tempExpiredTime) {
         this.tempExpiredTime = tempExpiredTime;
-    }
-
-    public String getIsTempName() {
-        return (isTemp) ? "是" : "否";
-    }
-
-    public void setIsTempName(String isTempName) {
-        this.isTempName = isTempName;
     }
 }

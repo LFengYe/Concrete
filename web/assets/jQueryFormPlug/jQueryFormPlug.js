@@ -49,6 +49,8 @@ $.fn.insertInputForm = function (options) {
                     }
 
                 } else if (controls[i].split(',')[1] === 'date') {
+                    inputResult += "<div><span>" + txt + "</span>:<input class='input' type='text' onfocus='WdatePicker({dateFmt: \"yyyy-MM-dd\"})' name='" + i + "' value='" + getNowDateShort() + "'/></div>";
+                } else if (controls[i].split(',')[1] === 'datetime') {
                     inputResult += "<div><span>" + txt + "</span>:<input class='input' type='text' onfocus='WdatePicker({dateFmt: \"yyyy-MM-dd HH:mm:ss\"})' name='" + i + "' value='" + getMaxDate() + "'/></div>";
                 } else if (controls[i].split(',')[1] === 'bool') {
                     inputResult += "<div><span>" + txt + "</span>:<input class='radio' type='radio' name='" + i + "' value='1' checked='checked' />是<input  class='radio' type='radio' name='" + i + "' value='2'/>否</div>";
@@ -60,7 +62,6 @@ $.fn.insertInputForm = function (options) {
                     inputResult += "<input class='input' type='hidden' name='" + i + "'/>";
                 } else if (controls[i].split(',')[1] === 'select') {
                     var selects = controls[i].split(",").slice(2);
-
                     inputResult += "<div><span>" + txt + "</span>:<input class='input' type='hidden' name='" + i + "' value='" + selects[0] + "'/>";
                     inputResult += "<select class='select' name='" + i + "'>";
                     for (var str in selects) {

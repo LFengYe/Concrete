@@ -1,0 +1,30 @@
+{
+    "control": {
+        "isTemp": "是否临时车辆,hidden,@true",
+        "carID": "车辆ID,hidden",
+        "systemNo": "GPS系统编号,hidden,@11111111111",
+        "carNO": "车牌号,string,10",
+        "loginName": "登录名,string,32",
+        "loginPass": "登录密码,string,64",
+        "tempExpiredTime": "到期时间,datetime",
+        "carType": "车型,string,10",
+        "carWeight": "车辆载重,string,5",
+        "remark": "备注,500"
+    },
+    "mustwrite": ["carNO", "loginName"],
+    "unique": ["carNO", "loginName"],
+    "primary": "carID",
+    "operator": ["add", "update", "delete", "submit", "import", "export", "disable", "enable"],
+    "operatorName": ["添加", "修改", "删除", "提交", "导入", "导出", "加入黑名单", "移除黑名单"],
+    "titles": {
+        "carID": "车辆ID,5%",
+        "carNO": "车牌号,20%",
+        "tempExpiredTime": "到期时间,20%",
+        "isCanUseName": "是否可用,10%",
+        "loginName": "登录名,10%",
+        "loginPass": "登录密码,10%",
+        "carType": "车型,10%",
+        "carWeight": "车辆载重,5%",
+        "remark": "备注,10%"
+    }
+}

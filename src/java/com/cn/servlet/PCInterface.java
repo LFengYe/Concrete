@@ -9,6 +9,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.cn.bean.CarInfo;
 import com.cn.bean.DriverInfo;
 import com.cn.controller.InterfaceController;
+import com.cn.task.SyncGPSData;
+import com.cn.task.SyncGPSStatus;
 import com.cn.util.DatabaseOpt;
 import com.cn.util.RedisAPI;
 import com.cn.util.Units;
@@ -137,6 +139,90 @@ public class PCInterface extends HttpServlet {
                 }
                 //</editor-fold>
 
+                //<editor-fold desc="定点区域">
+                case "定点区域": {
+                    switch (operation) {
+                        case "create": {
+                            json = interfaceController.createOperate(15, "view", "com/cn/json/", "com.cn.bean.", "CircleInfo", "CircleName", DatabaseOpt.DATA);
+                            break;
+                        }
+                        case "request_page": {
+                            json = interfaceController.queryOperate("com.cn.bean.", "view", "CircleInfo", "DestinationID", datas, rely, true, DatabaseOpt.DATA, pageSize, pageIndex);
+                            break;
+                        }
+                        case "import": {
+                            json = interfaceController.importData("com.cn.bean.", "CircleInfo", importPath + fileName, DatabaseOpt.DATA);
+                            break;
+                        }
+                        case "exportTemplate": {
+                            json = interfaceController.exportTemplate(filePath, servletPath, "com.cn.bean.", "CircleInfo", null);
+                            break;
+                        }
+                        case "export": {
+                            json = interfaceController.exportData(filePath, servletPath, "com.cn.bean.", "CircleInfo", (ArrayList<Object>) interfaceController.queryData("com.cn.bean.", "table", "CircleInfo", "CircleName", datas, DatabaseOpt.DATA, Integer.MAX_VALUE, 1));
+                            break;
+                        }
+                        case "request_table": {
+                            if (target.compareToIgnoreCase("countyGB") == 0) {
+                                String[] keys = {"countyGB", "destinationStation", "countyName"};
+                                String[] keysName = {"行政区域编码", "行政区域名称", "区域名称"};
+                                int[] keysWidth = {50, 50, 0};
+                                String[] fieldsName = {"countyGB", "stationName", "countyName"};
+                                json = interfaceController.queryOperate(target, "com.cn.bean.", "table", "StationInfo", "StationID", datas, rely, true, DatabaseOpt.DATA, pageSize, pageIndex, keys, keysName, keysWidth, fieldsName);
+                            }
+                            break;
+                        }
+                        case "submit": {
+                            json = interfaceController.submitOperate("com.cn.bean.", "CircleInfo", update, add, delete, "data");
+                            break;
+                        }
+                    }
+                    break;
+                }
+                //</editor-fold>
+                
+                //<editor-fold desc="手绘区域">
+                case "手绘区域": {
+                    switch (operation) {
+                        case "create": {
+                            json = interfaceController.createOperate(15, "view", "com/cn/json/", "com.cn.bean.", "PolygonInfo", "PolygonName", DatabaseOpt.DATA);
+                            break;
+                        }
+                        case "request_page": {
+                            json = interfaceController.queryOperate("com.cn.bean.", "view", "PolygonInfo", "PolygonName", datas, rely, true, DatabaseOpt.DATA, pageSize, pageIndex);
+                            break;
+                        }
+                        case "import": {
+                            json = interfaceController.importData("com.cn.bean.", "PolygonInfo", importPath + fileName, DatabaseOpt.DATA);
+                            break;
+                        }
+                        case "exportTemplate": {
+                            json = interfaceController.exportTemplate(filePath, servletPath, "com.cn.bean.", "PolygonInfo", null);
+                            break;
+                        }
+                        case "export": {
+                            json = interfaceController.exportData(filePath, servletPath, "com.cn.bean.", "PolygonInfo", (ArrayList<Object>) interfaceController.queryData("com.cn.bean.", "table", "PolygonInfo", "PolygonName", datas, DatabaseOpt.DATA, Integer.MAX_VALUE, 1));
+                            break;
+                        }
+                        case "request_table": {
+                            if (target.compareToIgnoreCase("countyGB") == 0) {
+                                String[] keys = {"countyGB", "destinationStation", "countyName"};
+                                String[] keysName = {"行政区域编码", "行政区域名称", "区域名称"};
+                                int[] keysWidth = {50, 50, 0};
+                                String[] fieldsName = {"countyGB", "stationName", "countyName"};
+                                json = interfaceController.queryOperate(target, "com.cn.bean.", "table", "StationInfo", "StationID", datas, rely, true, DatabaseOpt.DATA, pageSize, pageIndex, keys, keysName, keysWidth, fieldsName);
+                            }
+                            break;
+                        }
+                        case "submit": {
+                            json = interfaceController.submitOperate("com.cn.bean.", "PolygonInfo", update, add, delete, "data");
+                            break;
+                        }
+                    }
+                    break;
+                }
+                //</editor-fold>
+                
                 //<editor-fold desc="目的地管理">
                 case "目的地管理": {
                     switch (operation) {
@@ -243,11 +329,28 @@ public class PCInterface extends HttpServlet {
                                 json = interfaceController.queryOperate(target, "com.cn.bean.", "table", "StationInfo", "StationID", datas, rely, true, DatabaseOpt.DATA, pageSize, pageIndex, keys, keysName, keysWidth, fieldsName);
                             }
                             if (target.compareToIgnoreCase("factoryName") == 0) {
-                                String[] keys = {"factoryName", "remark"};
-                                String[] keysName = {"工厂名称", "备注"};
+                                String[] keys = {"factoryName", "companyName"};
+                                String[] keysName = {"工厂名称", "公司名称"};
                                 int[] keysWidth = {50, 50};
-                                String[] fieldsName = {"factoryName", "remark"};
+                                String[] fieldsName = {"factoryName", "companyName"};
                                 json = interfaceController.queryOperate(target, "com.cn.bean.", "table", "FactoryInfo", "FactoryName", datas, rely, true, DatabaseOpt.DATA, pageSize, pageIndex, keys, keysName, keysWidth, fieldsName);
+                            }
+                            if (target.compareToIgnoreCase("destinationName") == 0) {
+                                JSONObject relyObj = JSONObject.parseObject(rely);
+                                
+                                String[] keys = {"destinationName", "destinationContent"};
+                                String[] keysName = {"区域名称", "区域内容"};
+                                int[] keysWidth = {50, 50};
+                                if (relyObj.getString("destinationType").compareTo("定点区域") == 0) {
+                                    String[] fieldsName = {"circleName", "circleContent"};
+                                    json = interfaceController.queryOperate(target, "com.cn.bean.", "table", "CircleInfo", "CircleName", datas, rely, true, DatabaseOpt.DATA, pageSize, pageIndex, keys, keysName, keysWidth, fieldsName);
+                                } else if (relyObj.getString("destinationType").compareTo("手绘区域") == 0) {
+                                    String[] fieldsName = {"polygonName", "polygonPath"};
+                                    json = interfaceController.queryOperate(target, "com.cn.bean.", "table", "PolygonInfo", "PolygonName", datas, rely, true, DatabaseOpt.DATA, pageSize, pageIndex, keys, keysName, keysWidth, fieldsName);
+                                    //System.out.println("json:" + json);
+                                } else {
+                                    json = Units.objectToJson(-1, "内部错误, 请联系管理员!", null);
+                                }
                             }
                             break;
                         }
@@ -296,11 +399,13 @@ public class PCInterface extends HttpServlet {
                 case "车辆管理": {
                     switch (operation) {
                         case "create": {
-                            json = interfaceController.createOperate(15, "table", "com/cn/json/", "com.cn.bean.", "CarInfo", "CarID", DatabaseOpt.DATA);
+                            String whereCase = "isTemp = 0";
+                            json = interfaceController.createOperateWithFilter(15, "table", "com/cn/json/", "com.cn.bean.", "CarInfo", whereCase, "CarID", DatabaseOpt.DATA);
                             break;
                         }
                         case "request_page": {
-                            json = interfaceController.queryOperate("com.cn.bean.", "table", "CarInfo", "CarID", datas, rely, true, DatabaseOpt.DATA, pageSize, pageIndex);
+                            String whereCase = "isTemp = 0";
+                            json = interfaceController.queryOperateWithFilter("com.cn.bean.", "table", "CarInfo", "CarID", datas, rely, whereCase, true, DatabaseOpt.DATA, pageSize, pageIndex);
                             break;
                         }
                         case "import": {
@@ -328,7 +433,9 @@ public class PCInterface extends HttpServlet {
                             break;
                         }
                         case "export": {
-                            json = interfaceController.exportData(filePath, servletPath, "com.cn.bean.", "CarInfo", (ArrayList<Object>) interfaceController.queryData("com.cn.bean.", "table", "CarInfo", "CarID", datas, DatabaseOpt.DATA, Integer.MAX_VALUE, 1));
+                            //json = interfaceController.exportData(filePath, servletPath, "com.cn.bean.", "CarInfo", (ArrayList<Object>) interfaceController.queryData("com.cn.bean.", "table", "CarInfo", "CarID", datas, DatabaseOpt.DATA, Integer.MAX_VALUE, 1));
+                            String whereCase = "isTemp = 0";
+                            json = interfaceController.exportData(filePath, servletPath, "com.cn.bean.", "CarInfo", (ArrayList<Object>) interfaceController.queryOperate("com.cn.bean.", "table", "CarInfo", "CarID", datas, rely, whereCase, true, DatabaseOpt.DATA, Integer.MAX_VALUE, 1));
                             break;
                         }
                         case "request_table": {
@@ -339,6 +446,101 @@ public class PCInterface extends HttpServlet {
                                 String[] fieldsName = {"autoStylingName"};
                                 json = interfaceController.queryOperate(target, "com.cn.bean.", "table", "AutoStyling", "AutoStylingName", datas, rely, true, DatabaseOpt.DATA, pageSize, pageIndex, keys, keysName, keysWidth, fieldsName);
                             }
+                            break;
+                        }
+                        case "submit": {
+                            json = interfaceController.submitOperate("com.cn.bean.", "CarInfo", update, add, delete, "data");
+                            new Thread() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        /*导入部品基础信息到Redis中*/
+                                        List<Object> list = interfaceController.queryData("com.cn.bean.", "table", "CarInfo", "CarID", "*", DatabaseOpt.DATA, Integer.MAX_VALUE, 1);
+                                        Iterator<Object> iterator = list.iterator();
+                                        while (iterator.hasNext()) {
+                                            CarInfo info = (CarInfo) iterator.next();
+                                            RedisAPI.set("carInfo_" + info.getCarNO(), JSONObject.toJSONString(info));
+                                        }
+                                    } catch (Exception e) {
+                                        logger.error("Redis数据同步出错!", e);
+                                    }
+                                }
+                            }.start();
+                            break;
+                        }
+                        case "disable": {
+                            json = interfaceController.batchUpdateField("com.cn.bean.", "CarInfo", datas, "isCanUse", "1", "data");
+                            new Thread() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        /*导入部品基础信息到Redis中*/
+                                        List<Object> list = interfaceController.queryData("com.cn.bean.", "table", "CarInfo", "CarID", "*", DatabaseOpt.DATA, Integer.MAX_VALUE, 1);
+                                        Iterator<Object> iterator = list.iterator();
+                                        while (iterator.hasNext()) {
+                                            CarInfo info = (CarInfo) iterator.next();
+                                            RedisAPI.set("carInfo_" + info.getCarNO(), JSONObject.toJSONString(info));
+                                        }
+                                    } catch (Exception e) {
+                                        logger.error("Redis数据同步出错!", e);
+                                    }
+                                }
+                            }.start();
+                            break;
+                        }
+                        case "enable": {
+                            json = interfaceController.batchUpdateField("com.cn.bean.", "CarInfo", datas, "isCanUse", "0", "data");
+                            new Thread() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        /*导入部品基础信息到Redis中*/
+                                        List<Object> list = interfaceController.queryData("com.cn.bean.", "table", "CarInfo", "CarID", "*", DatabaseOpt.DATA, Integer.MAX_VALUE, 1);
+                                        Iterator<Object> iterator = list.iterator();
+                                        while (iterator.hasNext()) {
+                                            CarInfo info = (CarInfo) iterator.next();
+                                            RedisAPI.set("carInfo_" + info.getCarNO(), JSONObject.toJSONString(info));
+                                        }
+                                    } catch (Exception e) {
+                                        logger.error("Redis数据同步出错!", e);
+                                    }
+                                }
+                            }.start();
+                            break;
+                        }
+                        case "syncdata": {
+                            new Thread(new SyncGPSData()).start();
+                            json = Units.objectToJson(0, "同步完成!", null);
+                            break;
+                        }
+                        case "syncstatus": {
+                            new Thread(new SyncGPSStatus()).start();
+                            json = Units.objectToJson(0, "同步完成!", null);
+                            break;
+                        }
+                    }
+                    break;
+                }
+                //</editor-fold>
+                
+                //<editor-fold desc="临时车辆">
+                case "临时车辆": {
+                    switch (operation) {
+                        case "create": {
+                            //json = interfaceController.createOperate(15, "table", "com/cn/json/", "com.cn.bean.", "CarInfo", "CarID", DatabaseOpt.DATA);
+                            String whereCase = "isTemp = 1";
+                            json = interfaceController.createOperateWithFilter("com/cn/json/", "com.cn.bean.", "TempCarInfo", "tblCarInfo", whereCase, "CarID", 15, DatabaseOpt.DATA);
+                            break;
+                        }
+                        case "request_page": {
+                            String whereCase = "isTemp = 1";
+                            json = interfaceController.queryOperateWithFilter("com.cn.bean.", "table", "CarInfo", "CarID", datas, rely, whereCase, true, DatabaseOpt.DATA, pageSize, pageIndex);
+                            break;
+                        }
+                        case "export": {
+                            String whereCase = "isTemp = 1";
+                            //json = interfaceController.exportData(filePath, servletPath, "com.cn.bean.", "CarInfo", (ArrayList<Object>) interfaceController.queryData("com.cn.bean.", "table", "CarInfo", "CarID", datas, DatabaseOpt.DATA, Integer.MAX_VALUE, 1));
+                            json = interfaceController.exportData(filePath, servletPath, "com.cn.bean.", "CarInfo", (ArrayList<Object>) interfaceController.queryOperate("com.cn.bean.", "table", "CarInfo", "CarID", datas, rely, whereCase, true, DatabaseOpt.DATA, Integer.MAX_VALUE, 1));
                             break;
                         }
                         case "submit": {
@@ -602,6 +804,7 @@ public class PCInterface extends HttpServlet {
                 //</editor-fold>
 
                 //</editor-fold>
+                
                 //<editor-fold desc="订单管理">
                 //<editor-fold desc="订单发布">
                 case "订单发布": {

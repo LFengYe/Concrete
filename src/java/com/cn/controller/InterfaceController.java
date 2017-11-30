@@ -40,14 +40,54 @@ public class InterfaceController {
     public String createOperate(int pageSize, String type, String jsonPackagePath, String beanPackage, String tableName, String orderField, String connType) throws Exception {
         return createOperateWithFilter(pageSize, type, jsonPackagePath, beanPackage, tableName, "", orderField, connType);
     }
+    
+    public String createOperate(String jsonPackagePath, String className,  String beanPackage, String tableName, String orderField, int pageSize, String connType) throws Exception {
+        return createOperateWithFilter(jsonPackagePath, beanPackage, className, tableName, "", orderField, pageSize, connType);
+    }
 
+    /**
+     * 带条件的创建操作
+     * @param jsonPackagePath json文件路径
+     * @param beanPackage Java类报名
+     * @param className Java类名
+     * @param tableName 数据库表名
+     * @param whereCase 查询条件
+     * @param orderField 排序字段
+     * @param pageSize 每页条数
+     * @param conn 连接类型
+     * @return
+     * @throws Exception 
+     */
+    public String createOperateWithFilter(String jsonPackagePath, String beanPackage, String className, String tableName, String whereCase, String orderField, int pageSize, String conn) throws Exception {
+        String json;
+        CommonController commonController = new CommonController();
+        String path = this.getClass().getClassLoader().getResource("/").getPath().replaceAll("%20", " ");
+        String result = Units.returnFileContext(path + jsonPackagePath, className + ".json");
+        Class objClass = Class.forName(beanPackage + className);
+        Method method = objClass.getMethod("getRecordCount", new Class[0]);
+        if (result != null) {
+            //commonController.dataBaseQuery(type, beanPackage, tableName, "*", whereCase, pageSize, 1, orderField, 0, conn);
+            List<Object> list = commonController.dataBaseQuery(tableName, beanPackage + className, "*", whereCase, pageSize, 1, orderField, 0, conn);
+            if (list != null && list.size() > 0) {
+                StringBuffer buffer = new StringBuffer(result);
+                buffer.insert(buffer.lastIndexOf("}"), ", \"datas\":" + JSONObject.toJSONString(list, Units.features));
+                buffer.insert(buffer.lastIndexOf("}"), ", \"counts\":" + method.invoke(null, new Object[]{}));
+                result = buffer.toString();
+            }
+            json = Units.objectToJson(0, "", result);
+        } else {
+            json = Units.objectToJson(-1, "服务器出错!", null);
+        }
+        return json;
+    }
+    
     /**
      * 带筛选条件的页面create操作
      * @param pageSize
-     * @param type
-     * @param jsonPackagePath
-     * @param beanPackage
-     * @param tableName
+     * @param type 类型: table | view
+     * @param jsonPackagePath json文件路径
+     * @param beanPackage Java包名
+     * @param tableName Java类名(同数据库名)
      * @param whereCase
      * @param orderField
      * @param conn
@@ -286,37 +326,50 @@ public class InterfaceController {
         //System.out.println("sql:" + commonController.getWhereSQLStr(objClass, keyWord, rely, isAll));
         List<Object> list = commonController.dataBaseQuery(type, beanPackage, tableName, "*", commonController.getWhereSQLStr(objClass, keyWord, rely, isAll), pageSize, pageIndex, orderField, 0, conn);
         if (null != list && list.size() > 0) {
-            StringBuffer buffer = new StringBuffer();
-            buffer.append("{\"titles\":{");
+            JSONObject resultObj = new JSONObject();
+            //StringBuffer buffer = new StringBuffer();
+            //buffer.append("{\"titles\":{");
+            JSONObject titleObj = new JSONObject();
             for (int i = 0; i < keys.length; i++) {
-                buffer.append("\"").append(keys[i]).append("\"").append(":");
-                buffer.append("\"").append(keysName[i]).append(",").append(keysWidth[i]).append("%").append("\"").append(",");
+                titleObj.put(keys[i], keysName[i] + "," + keysWidth[i] + "%");
+                //buffer.append("\"").append(keys[i]).append("\"").append(":");
+                //buffer.append("\"").append(keysName[i]).append(",").append(keysWidth[i]).append("%").append("\"").append(",");
             }
-            buffer.deleteCharAt(buffer.length() - 1);
-            buffer.append("},\"datas\":[");
+            resultObj.put("titles", titleObj);
+            //buffer.deleteCharAt(buffer.length() - 1);
+            //buffer.append("},\"datas\":[");
+            JSONArray datasAry = new JSONArray();
             for (Iterator<Object> it = list.iterator(); it.hasNext();) {
                 Object object = it.next();
-                buffer.append("{");
+                //buffer.append("{");
+                JSONObject dataObj = new JSONObject();
                 for (int i = 0; i < keys.length; i++) {
                     PropertyDescriptor descriptor = new PropertyDescriptor(fieldsName[i], objClass);
                     Method getMethod = descriptor.getReadMethod();
-                    buffer.append("\"").append(keys[i]).append("\":").append("\"").append(getMethod.invoke(object)).append("\"").append(",");
+                    //buffer.append("\"").append(keys[i]).append("\":").append("\"").append(getMethod.invoke(object)).append("\"").append(",");
+                    dataObj.put(keys[i], getMethod.invoke(object));
                 }
-                buffer.deleteCharAt(buffer.length() - 1);
-                buffer.append("},");
+                //buffer.deleteCharAt(buffer.length() - 1);
+                //buffer.append("},");
+                datasAry.add(dataObj);
             }
-            buffer.deleteCharAt(buffer.length() - 1);
-            buffer.append("]");
-            buffer.append(",\"counts\":").append(method.invoke(null, new Object[]{}));
-            buffer.append(",\"target\":").append("\"").append(target).append("\"");
-            buffer.append(",\"rely\":").append(rely);
+            //buffer.deleteCharAt(buffer.length() - 1);
+            //buffer.append("]");
+            resultObj.put("datas", datasAry);
+            //buffer.append(",\"counts\":").append(method.invoke(null, new Object[]{}));
+            resultObj.put("counts", method.invoke(null, new Object[]{}));
+            //buffer.append(",\"target\":").append("\"").append(target).append("\"");
+            resultObj.put("target", target);
+            //buffer.append(",\"rely\":").append(rely);
+            resultObj.put("rely", rely);
 
             if (objClass.isAnnotationPresent(ClassDescription.class)) {
                 ClassDescription description = (ClassDescription) objClass.getAnnotation(ClassDescription.class);
-                buffer.append(",\"module\":").append("\"").append(description.classDesc()).append("\"");
+                //buffer.append(",\"module\":").append("\"").append(description.classDesc()).append("\"");
+                resultObj.put("module", description.classDesc());
             }
-            buffer.append("}");
-            json = Units.objectToJson(0, "", buffer.toString());
+            //buffer.append("}");
+            json = Units.objectToJson(0, "", resultObj.toJSONString());
         } else {
             json = Units.objectToJson(-1, "数据为空!", null);
         }

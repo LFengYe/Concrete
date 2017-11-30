@@ -1,0 +1,31 @@
+{
+    "control": {
+        "circleName": "名称,string,20",
+        "countyGB": "行政区域编码,@table:@countyName",
+        "countyName": "行政区域,hidden",
+        "circleDotLat": "定点纬度,string,10",
+        "circleDotLng": "定点经度,string,10",
+        "circleRadius": "半径(米),number",
+        "remark": "备注,string,500"
+    },
+    "mustwrite": ["circleName","countyGB", "circleDotLat", "circleDotLng", "circleRadius"],
+    "unique": [],
+    "primary": "circleName",
+    "operator": ["add","update","delete","submit","import","export"],
+    "operatorName": ["添加","修改","删除","提交","导入","导出"],
+    "titles": {
+        "circleName": "名称,20%",
+        "countyGB": "行政区域编码,20%",
+        "countyName": "行政区域,20%",
+        "circleDotLat": "定点纬度,10%",
+        "circleDotLng": "定点经度,10%",
+        "circleRadius": "半径(米),10%",
+        "remark": "备注,10%"
+    },
+    "dataType": {
+        "circleName": {
+            "type": "mapCircle",
+            "content": ["circleDotLat", "circleDotLng", "circleRadius"]
+        }
+    }
+}

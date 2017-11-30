@@ -65,7 +65,7 @@ function ajax(module, url, operation, data, successCallBack, failCallBack) {
                         alert(data.message);
                     }
                     if (data.data) {
-                        //console.log(data.data);
+                        console.log(data.data);
                         successCallBack(JSON.parse(data.data));
                     } else {
                         successCallBack();

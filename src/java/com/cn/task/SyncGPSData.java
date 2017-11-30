@@ -90,7 +90,7 @@ public class SyncGPSData implements Runnable {
                 }
                 if (addList.size() > 0) {
                     LOG.info("新增条数:" + addList.size());
-                    ArrayList<Integer> result = controller.dataBaseOperate(addList.toJSONString(), "com.cn.bean.", "CarInfo", "add", DatabaseOpt.DATA);
+                    ArrayList<Integer> result = controller.dataBaseOperate(JSONObject.toJSONString(addList, Units.features), "com.cn.bean.", "CarInfo", "add", DatabaseOpt.DATA);
                     if (result.get(0) != 0) {
                         LOG.error("同步添加车辆资料失败!");
                     }

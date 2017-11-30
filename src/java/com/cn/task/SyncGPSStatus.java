@@ -48,7 +48,7 @@ public class SyncGPSStatus implements Runnable {
                 //System.out.println("gpsExpiredSecond:" + gpsExpiredSecond + ",gpsTime:" + gpsTime);
                 if (gpsExpiredSecond < 600 && !Units.strIsEmpty(gpsTime)) {//GPS定位时间超过10分钟, 判定为离线
                     setObj.put("isOnline", 1);
-                    System.out.println(carNo + "在线");
+                    //System.out.println(carNo + "在线");
                 } else {
                     setObj.put("isOnline", 0);
                 }

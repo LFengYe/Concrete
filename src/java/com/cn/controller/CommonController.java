@@ -219,7 +219,8 @@ public class CommonController {
                                 continue;
                             }
                             try {
-                                setFieldValue(objClass, key, whereObject.getString(key), statement, itemCount);
+                                if (!Units.strIsEmpty(whereObject.getString(key)))
+                                    setFieldValue(objClass, key, whereObject.getString(key), statement, itemCount);
                             } catch (NoSuchFieldException ex) {
                                 logger.error("未找到指定字段", ex);
                                 statement.setString(itemCount, whereObject.getString(key));
@@ -239,7 +240,7 @@ public class CommonController {
                     builder = new StringBuilder("delete from tbl" + tableName);
                     JSONObject firstObj = arrayData.getJSONObject(0);
 
-                    //拼接set字段sql
+                    //拼接where的sql
                     boolean isFirst = true;
                     synchronized (this) {
                         Iterator<String> keysIterator = firstObj.keySet().iterator();
@@ -281,7 +282,8 @@ public class CommonController {
                                     continue;
                                 }
                                 try {
-                                    setFieldValue(objClass, key, setObject.getString(key), statement, itemCount);
+                                    if (!Units.strIsEmpty(setObject.getString(key)))//where条件字段不能为空
+                                        setFieldValue(objClass, key, setObject.getString(key), statement, itemCount);
                                 } catch (NoSuchFieldException ex) {
                                     logger.error("未找到指定字段", ex);
                                     statement.setString(itemCount, setObject.getString(key));

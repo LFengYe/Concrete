@@ -1,22 +1,23 @@
 {
     "control": {
+        "isTemp": "是否临时车辆,hidden,@false",
         "carID": "车辆ID,hidden",
         "carNO": "车牌号,string,10",
-        "systemNo": "GPS系统编号,string,32",
+        "systemNo": "GPS系统编号,string,11",
         "motorcadeName": "车队,string,20",
         "loginName": "登录名,string,32",
         "loginPass": "登录密码,string,64",
-        "carType": "车型,string,32",
-        "carWeight": "车辆载重,string,64",
         "electronicSeal": "电子封签,select,无封签,有封签",
         "expiredDate": "到期时间,date",
+        "carType": "车型,string,10",
+        "carWeight": "车辆载重,string,5",
         "remark": "备注,500"
     },
     "mustwrite": ["carNO", "systemNo", "loginName"],
     "unique": ["carNO", "loginName"],
     "primary": "carID",
-    "operator": ["add", "update", "delete", "submit", "import", "export", "disable", "enable"],
-    "operatorName": ["添加", "修改", "删除", "提交", "导入", "导出", "加入黑名单", "移除黑名单"],
+    "operator": ["add", "update", "delete", "submit", "import", "export", "disable", "enable", "syncdata", "syncstatus"],
+    "operatorName": ["添加", "修改", "删除", "提交", "导入", "导出", "加入黑名单", "移除黑名单", "同步数据", "同步状态"],
     "titles": {
         "carID": "车辆ID,5%",
         "carNO": "车牌号,10%",

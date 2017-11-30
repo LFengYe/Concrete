@@ -6,7 +6,8 @@
         "countyGB": "行政区域编码,@table:@destinationStation,@countyName",
         "countyName": "区域名称,hidden",
         "polygonName": "自定义区域,@mapDraw,@countyName:@polygonPath",
-        "polygonPath": "自定义区域路径,hidden"
+        "polygonPath": "自定义区域路径,hidden",
+        "polygonName": "自定义区域,@mapDraw,@countyName:@polygonPath"
     },
     "mustwrite": ["destinationName", "countyGB"],
     "unique": [],
