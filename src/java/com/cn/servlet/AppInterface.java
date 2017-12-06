@@ -23,6 +23,7 @@ import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -62,7 +63,7 @@ public class AppInterface extends HttpServlet {
         //logger.info(Units.getIpAddress(request) + "accept:" + subUri + ",time:" + (new Date().getTime()));
 
         try {
-            logger.info(subUri + ",params:" + params);
+            //logger.info(subUri + ",params:" + params);
             JSONObject paramsJson = JSONObject.parseObject(params.replace(" ", "%20"));
 
             String module = paramsJson.getString("module");
@@ -179,7 +180,6 @@ public class AppInterface extends HttpServlet {
             logger.error("错误信息:" + e.getMessage(), e);
             json = Units.objectToJson(-1, "输入参数错误!", e.toString());
         }
-        //logger.info(Units.getIpAddress(request) + "response:" + subUri + ",time:" + (new Date().getTime()));
 
         PrintWriter out = response.getWriter();
 
@@ -189,6 +189,7 @@ public class AppInterface extends HttpServlet {
             response.setHeader("Pragma", "no-cache");
             response.setDateHeader("Expires", 0);
             out.print(json);
+            logger.info("subUri:" + subUri + ",json:" + json);
         } finally {
             if (out != null) {
                 out.close();
@@ -210,7 +211,8 @@ public class AppInterface extends HttpServlet {
             if (gpsLocal != null && gpsLocal.size() > 0) {
                 latest = (Latest) gpsLocal.get(0);
                 String gpsTime = latest.getGpsTime();
-                Date date = DateFormat.getDateTimeInstance().parse(gpsTime.substring(0, 19));
+                SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date date = format.parse(gpsTime.substring(0, 19));
                 if (Units.getIntervalTimeWithNow(date) > limitTime) {
                     return Units.objectToJson(-1, "车辆定位信息已过期", null);
                 }

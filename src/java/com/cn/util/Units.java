@@ -643,8 +643,6 @@ public class Units {
      */
     public static long getIntervalTimeWithNow(Date date) {
         Date nowDate = new Date();
-        System.out.println(nowDate.getTime());
-        System.out.println(date.getTime());
         return nowDate.getTime() - date.getTime();
     }
 

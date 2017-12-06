@@ -14,8 +14,8 @@
     "mustwrite": ["carNO", "loginName"],
     "unique": ["carNO", "loginName"],
     "primary": "carID",
-    "operator": ["add", "update", "delete", "submit", "import", "export", "disable", "enable"],
-    "operatorName": ["添加", "修改", "删除", "提交", "导入", "导出", "加入黑名单", "移除黑名单"],
+    "operator": ["add", "update", "delete", "submit", "export", "disable", "enable"],
+    "operatorName": ["添加", "修改", "删除", "提交", "导出", "加入黑名单", "移除黑名单"],
     "titles": {
         "carID": "车辆ID,5%",
         "carNO": "车牌号,20%",

@@ -30,9 +30,9 @@ public class CustomerInfo {
     private String countyName;
     @FieldDescription(description = "行政区域", operate = "display")
     private String destinationStation;
-    @FieldDescription(description = "区域类型", operate = "import")
+    @FieldDescription(description = "区域类型")
     private String destinationType;
-    @FieldDescription(description = "区域名称", operate = "import")
+    @FieldDescription(description = "区域名称")
     private String destinationName;
     @FieldDescription(description = "区域内容")
     private String destinationContent;

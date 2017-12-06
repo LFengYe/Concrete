@@ -33,7 +33,7 @@ public class WriteERPData implements Runnable {
         Connection conn = null;
         CallableStatement statement = null;
         try {
-            conn = opt.getConnection(DatabaseOpt.ORDER);
+            conn = opt.getConnection(DatabaseOpt.ORDER_ZZ);
             statement = conn.prepareCall("insert into tableName() values(?, ?, ?)");
             statement.setString(2, Units.getNowDate() + " 23:59:59");
             ResultSet set = statement.executeQuery();

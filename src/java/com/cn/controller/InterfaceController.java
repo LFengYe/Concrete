@@ -479,7 +479,7 @@ public class InterfaceController {
     public String submitOperate(String beanPackage, String tableName, String update, String add, String delete, String connType) throws Exception {
         CommonController commonController = new CommonController();
         DatabaseOpt opt = new DatabaseOpt();
-        String conn = (connType.compareTo("base") == 0) ? DatabaseOpt.ORDER : DatabaseOpt.DATA;
+        String conn = (connType.compareTo("base") == 0) ? DatabaseOpt.ORDER_ZZ : DatabaseOpt.DATA;
         
         if (!Units.strIsEmpty(add) && !(add.compareTo("[]") == 0)) {
             ArrayList<Integer> addResult = commonController.dataBaseOperate(add, beanPackage, tableName, "add", conn);
@@ -507,7 +507,7 @@ public class InterfaceController {
     
     public String batchUpdateField(String beanPackage, String tableName, String whereAry, String fieldName, String fieldValue, String connType) throws Exception {
         CommonController commonController = new CommonController();
-        String conn = (connType.compareTo("base") == 0) ? DatabaseOpt.ORDER : DatabaseOpt.DATA;
+        String conn = (connType.compareTo("base") == 0) ? DatabaseOpt.ORDER_ZZ : DatabaseOpt.DATA;
         JSONArray updateWhereAry = JSONArray.parseArray(whereAry);
         StringBuilder updateStr = new StringBuilder("[");
         for (int i = 0; i < updateWhereAry.size(); i++) {

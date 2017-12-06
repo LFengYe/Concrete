@@ -37,7 +37,7 @@ public class TempCarInfo {
     private String carType;
     @FieldDescription(description = "车辆载重", operate = "import")
     private float carWeight;
-    @FieldDescription(description = "GPS系统编号", operate = "import")
+    @FieldDescription(description = "GPS系统编号")
     private String systemNo;
     @FieldDescription(description = "是否可用")
     private int isCanUse;

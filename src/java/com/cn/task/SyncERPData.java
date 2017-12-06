@@ -25,15 +25,20 @@ import org.apache.log4j.Logger;
 public class SyncERPData implements Runnable {
 
     private static final Logger LOG = Logger.getLogger(SyncERPData.class);
+    private final String databaseStrType;
 
+    public SyncERPData(String type) {
+        databaseStrType = type;
+    }
+    
     @Override
     public void run() {
-        LOG.info("开始同步订单资料...");
+        LOG.info(databaseStrType + "开始同步订单资料...");
         DatabaseOpt opt = new DatabaseOpt();
         Connection conn = null;
         CallableStatement statement = null;
         try {
-            conn = opt.getConnection(DatabaseOpt.ORDER);
+            conn = opt.getConnection(databaseStrType);
             statement = conn.prepareCall("select * from v_XsGPS where VGP_CDate between ? and ?");
             statement.setString(1, Units.getNowDate() + " 00:00:00");
             statement.setString(2, Units.getNowDate() + " 23:59:59");
@@ -93,7 +98,7 @@ public class SyncERPData implements Runnable {
                 LOG.error("数据库关闭失败!", e);
             }
         }
-        LOG.info("同步订单资料完成...");
+        LOG.info(databaseStrType + "同步订单资料完成...");
     }
 
 }
