@@ -56,13 +56,13 @@ public class StartInit implements ServletContextListener {
             
             timeOutScheduler.scheduleWithFixedDelay(new SyncERPData(DatabaseOpt.ORDER_ZZ), 0, ERP_SYNC_FREQUENCY, TimeUnit.MINUTES);
             
-//            timeOutScheduler.scheduleWithFixedDelay(new SyncERPData(DatabaseOpt.ORDER_JB), 0, ERP_SYNC_FREQUENCY, TimeUnit.MINUTES);
+            timeOutScheduler.scheduleWithFixedDelay(new SyncERPData(DatabaseOpt.ORDER_JB), 0, ERP_SYNC_FREQUENCY, TimeUnit.MINUTES);
             
-//            timeOutScheduler.scheduleWithFixedDelay(new SyncERPData(DatabaseOpt.ORDER_RD), 0, ERP_SYNC_FREQUENCY, TimeUnit.MINUTES);
+            timeOutScheduler.scheduleWithFixedDelay(new SyncERPData(DatabaseOpt.ORDER_RD), 0, ERP_SYNC_FREQUENCY, TimeUnit.MINUTES);
             
-//            timeOutScheduler.scheduleWithFixedDelay(new SyncERPData(DatabaseOpt.ORDER_RF), 0, ERP_SYNC_FREQUENCY, TimeUnit.MINUTES);
+            timeOutScheduler.scheduleWithFixedDelay(new SyncERPData(DatabaseOpt.ORDER_RF), 0, ERP_SYNC_FREQUENCY, TimeUnit.MINUTES);
             
-//            timeOutScheduler.scheduleWithFixedDelay(new SyncERPData(DatabaseOpt.ORDER_RX), 0, ERP_SYNC_FREQUENCY, TimeUnit.MINUTES);
+            timeOutScheduler.scheduleWithFixedDelay(new SyncERPData(DatabaseOpt.ORDER_RX), 0, ERP_SYNC_FREQUENCY, TimeUnit.MINUTES);
             
             timeOutScheduler.scheduleWithFixedDelay(new SyncGPSStatus(), 0, GPS_STATUS_SYNC_FREQUENCY, TimeUnit.MINUTES);
             LOG.info("启动定时任务成功!");
