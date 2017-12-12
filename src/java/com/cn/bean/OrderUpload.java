@@ -21,6 +21,16 @@ public class OrderUpload {
     }
     @FieldDescription(description = "订单ID")
     private String orderID;
+    @FieldDescription(description = "车牌号", operate = "display")
+    private String carNO;
+    @FieldDescription(description = "客户名称", operate = "display")
+    private String customerName;
+    @FieldDescription(description = "工厂名称", operate = "display")
+    private String factoryName;
+    @FieldDescription(description = "货物名称", operate = "display")
+    private String goodsName;
+    @FieldDescription(description = "地区名称")
+    private String areaName;
     @FieldDescription(description = "上报时间")
     private String uploadTime;
     @FieldDescription(description = "上传纬度")
@@ -148,6 +158,46 @@ public class OrderUpload {
 
     public void setCarAddress(String carAddress) {
         this.carAddress = carAddress;
+    }
+
+    public String getCarNO() {
+        return carNO;
+    }
+
+    public void setCarNO(String carNO) {
+        this.carNO = carNO;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public String getFactoryName() {
+        return factoryName;
+    }
+
+    public void setFactoryName(String factoryName) {
+        this.factoryName = factoryName;
+    }
+
+    public String getGoodsName() {
+        return goodsName;
+    }
+
+    public void setGoodsName(String goodsName) {
+        this.goodsName = goodsName;
+    }
+
+    public String getAreaName() {
+        return areaName;
+    }
+
+    public void setAreaName(String areaName) {
+        this.areaName = areaName;
     }
     
 }

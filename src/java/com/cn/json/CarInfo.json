@@ -28,7 +28,7 @@
         "isOnlineName": "在线状态,10%",
         "electronicSeal": "电子封签,10%",
         "expiredDate": "到期时间,10%",
-        "isCanUseName": "是否可用,10%",
+        "isDisabledName": "是否可用,10%",
         "loginName": "登录名,10%",
         "loginPass": "登录密码,10%",
         "carType": "车型,10%",

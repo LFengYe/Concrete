@@ -40,9 +40,9 @@ public class CarInfo {
     @FieldDescription(description = "GPS系统编号", operate = "import")
     private String systemNo;
     @FieldDescription(description = "是否可用")
-    private int isCanUse;
+    private int isDisabled;
     @FieldDescription(description = "是否可用", operate = "display")
-    private String isCanUseName;
+    private String isDisabledName;
     @FieldDescription(description = "GPS定位时间")
     private String gpsTime;
     @FieldDescription(description = "是否在线")
@@ -102,20 +102,20 @@ public class CarInfo {
         this.systemNo = systemNo;
     }
 
-    public int getIsCanUse() {
-        return isCanUse;
+    public int getIsDisabled() {
+        return isDisabled;
     }
 
-    public void setIsCanUse(int isCanUse) {
-        this.isCanUse = isCanUse;
+    public void setIsDisabled(int isDisabled) {
+        this.isDisabled = isDisabled;
     }
 
-    public String getIsCanUseName() {
-        return isCanUse == 0 ? "启用" : "禁用";
+    public String getIsDisabledName() {
+        return isDisabled == 0 ? "启用" : "禁用";
     }
 
-    public void setIsCanUseName(String isCanUseName) {
-        this.isCanUseName = isCanUseName;
+    public void setIsDisabledName(String isDisabledName) {
+        this.isDisabledName = isDisabledName;
     }
 
     public String getElectronicSeal() {

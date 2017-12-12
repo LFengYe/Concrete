@@ -19,10 +19,6 @@
         <servlet-name>DataInterface</servlet-name>
         <servlet-class>com.cn.servlet.DataInterface</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>AppUploadServlet</servlet-name>
-        <servlet-class>com.cn.servlet.AppUploadServlet</servlet-class>
-    </servlet>
     <servlet-mapping>
         <servlet-name>DataInterface</servlet-name>
         <url-pattern>/action.do</url-pattern>
@@ -54,10 +50,6 @@
     <welcome-file-list>
         <welcome-file>login.html</welcome-file>
     </welcome-file-list>
-    <servlet-mapping>
-        <servlet-name>AppUploadServlet</servlet-name>
-        <url-pattern>/upload.do</url-pattern>
-    </servlet-mapping>
     <session-config>
         <session-timeout>
             30

@@ -469,7 +469,7 @@ public class PCInterface extends HttpServlet {
                             break;
                         }
                         case "disable": {
-                            json = interfaceController.batchUpdateField("com.cn.bean.", "CarInfo", datas, "isCanUse", "1", "data");
+                            json = interfaceController.batchUpdateField("com.cn.bean.", "CarInfo", datas, "isDisabled", "1", "data");
                             new Thread() {
                                 @Override
                                 public void run() {
@@ -489,7 +489,7 @@ public class PCInterface extends HttpServlet {
                             break;
                         }
                         case "enable": {
-                            json = interfaceController.batchUpdateField("com.cn.bean.", "CarInfo", datas, "isCanUse", "0", "data");
+                            json = interfaceController.batchUpdateField("com.cn.bean.", "CarInfo", datas, "isDisabled", "0", "data");
                             new Thread() {
                                 @Override
                                 public void run() {
@@ -564,7 +564,7 @@ public class PCInterface extends HttpServlet {
                             break;
                         }
                         case "disable": {
-                            json = interfaceController.batchUpdateField("com.cn.bean.", "CarInfo", datas, "isCanUse", "1", "data");
+                            json = interfaceController.batchUpdateField("com.cn.bean.", "CarInfo", datas, "isDisabled", "1", "data");
                             new Thread() {
                                 @Override
                                 public void run() {
@@ -584,7 +584,7 @@ public class PCInterface extends HttpServlet {
                             break;
                         }
                         case "enable": {
-                            json = interfaceController.batchUpdateField("com.cn.bean.", "CarInfo", datas, "isCanUse", "0", "data");
+                            json = interfaceController.batchUpdateField("com.cn.bean.", "CarInfo", datas, "isDisabled", "0", "data");
                             new Thread() {
                                 @Override
                                 public void run() {
@@ -854,12 +854,12 @@ public class PCInterface extends HttpServlet {
                 case "订单完成上报": {
                     switch (operation) {
                         case "create": {
-                            json = interfaceController.createOperate(15, "table", "com/cn/json/", "com.cn.bean.", "OrderUpload", "OrderID", DatabaseOpt.DATA);
+                            json = interfaceController.createOperate(15, "view", "com/cn/json/", "com.cn.bean.", "OrderUpload", "OrderID", DatabaseOpt.DATA);
                             json = Units.insertStr(json, "\\\"订单ID\\", ",@CON-" + Units.getNowTimeNoSeparator());
                             break;
                         }
                         case "request_page": {
-                            json = interfaceController.queryOperate("com.cn.bean.", "table", "OrderUpload", "OrderID", datas, rely, true, DatabaseOpt.DATA, pageSize, pageIndex);
+                            json = interfaceController.queryOperate("com.cn.bean.", "view", "OrderUpload", "OrderID", datas, rely, true, DatabaseOpt.DATA, pageSize, pageIndex);
                             break;
                         }
                         case "export": {
