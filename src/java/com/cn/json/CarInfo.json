@@ -1,6 +1,6 @@
 {
     "control": {
-        "isTemp": "是否临时车辆,hidden,@false",
+        "isTemp": "是否临时车辆,hidden,@0",
         "carID": "车辆ID,hidden",
         "carNO": "车牌号,string,10",
         "systemNo": "GPS系统编号,string,11",
@@ -19,6 +19,7 @@
     "operator": ["add", "update", "delete", "submit", "import", "export", "disable", "enable", "syncdata", "syncstatus"],
     "operatorName": ["添加", "修改", "删除", "提交", "导入", "导出", "加入黑名单", "移除黑名单", "同步数据", "同步状态"],
     "titles": {
+        "isTemp": "是否临时车辆,0%",
         "carID": "车辆ID,5%",
         "carNO": "车牌号,10%",
         "systemNo": "GPS系统编号,15%",

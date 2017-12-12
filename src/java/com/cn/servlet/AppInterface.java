@@ -16,6 +16,7 @@ import com.cn.bean.UserInfo;
 import com.cn.controller.CommonController;
 import com.cn.controller.InterfaceController;
 import com.cn.util.DatabaseOpt;
+import com.cn.util.FileUnits;
 import com.cn.util.GeoUtils;
 import com.cn.util.Response;
 import com.cn.util.Units;
@@ -172,6 +173,15 @@ public class AppInterface extends HttpServlet {
                     break;
                 }
                 //</editor-fold>
+                
+                case "upload": {
+                    switch (operation) {
+                        case "app": {
+                            
+                        }
+                    }
+                    break;
+                }
             }
 
         } catch (Exception e) {
@@ -188,7 +198,7 @@ public class AppInterface extends HttpServlet {
             response.setHeader("Pragma", "no-cache");
             response.setDateHeader("Expires", 0);
             out.print(json);
-            logger.info("subUri:" + subUri + ",json:" + json);
+            //logger.info("subUri:" + subUri + ",json:" + json);
         } finally {
             if (out != null) {
                 out.close();
@@ -263,12 +273,17 @@ public class AppInterface extends HttpServlet {
                 isUserArrive = true;
             }
             
+            //最终存放目录(先将图片放入工程下的upload目录中, 使用完毕后移动到最终存放目录)
+            String realPath = "/home/concrete/upload/";
+            FileUnits.moveFile(servletPath + "upload/" + driverImgPath + ".jpg", realPath + driverImgPath + ".jpg");
+            
             //判断车辆位置是否在行政区域
             if (!isCarArrive) {
                 uploadObj.put("uploadStatus", -1);
                 uploadObj.put("uploadMessage", "车辆位置没有在目的地区域内");
                 int result = commonController.dataBaseOperate("[" + uploadObj.toJSONString() + "]", "com.cn.bean.", "OrderUpload", "add", DatabaseOpt.DATA).get(0);
                 if (result == 0) {
+                    FileUnits.moveFile(servletPath + "upload/" + carImgPath + ".jpg", realPath + carImgPath + ".jpg");
                     return Units.objectToJson(-1, "信息上报成功, 您的车辆当前没有在目的地区域内", null);
                 } else {
                     return Units.objectToJson(-1, "信息上报失败", null);
@@ -281,6 +296,7 @@ public class AppInterface extends HttpServlet {
                 uploadObj.put("uploadMessage", "上传位置没有在目的地区域内");
                 int result = commonController.dataBaseOperate("[" + uploadObj.toJSONString() + "]", "com.cn.bean.", "OrderUpload", "add", DatabaseOpt.DATA).get(0);
                 if (result == 0) {
+                    FileUnits.moveFile(servletPath + "upload/" + carImgPath + ".jpg", realPath + carImgPath + ".jpg");
                     return Units.objectToJson(-1, "信息上报成功, 您当前没有在目的地区域内", null);
                 } else {
                     return Units.objectToJson(-1, "信息上报失败", null);
@@ -290,12 +306,14 @@ public class AppInterface extends HttpServlet {
             if (orderInfo.isIsRequireImg()) {
                 //识别车牌号并判断
                 //Response r = Units.getCarNoWithImg(paramsJson.getString("carImg").replace("data:image/jpeg;base64,", ""));//使用上传的base64数据车牌识别失败, 没有查到原因
-                Response r = Units.getCarNoWithImg(Units.getImageStr(servletPath + "upload/" + carImgPath + ".jpg"));
+                //Response r = Units.getCarNoWithImg(Units.getImageStr(servletPath + "upload/" + carImgPath + ".jpg"));
+                Response r = Units.getCarNoWithImgBaiduYun(servletPath + "upload/" + carImgPath + ".jpg");
                 if (r.getStatus() == 0 && r.getData().compareTo(orderInfo.getCarNO()) == 0) {
                     uploadObj.put("uploadStatus", 0);
                     uploadObj.put("uploadMessage", "任务完成");
                     int result = commonController.dataBaseOperate("[" + uploadObj.toJSONString() + "]", "com.cn.bean.", "OrderUpload", "add", DatabaseOpt.DATA).get(0);
                     if (result == 0) {
+                        FileUnits.moveFile(servletPath + "upload/" + carImgPath + ".jpg", realPath + carImgPath + ".jpg");
                         return updateOrderInfoFinished(orderInfo.getOrderID());
                     } else {
                         return Units.objectToJson(-1, "信息上报失败", null);
@@ -306,12 +324,14 @@ public class AppInterface extends HttpServlet {
                     uploadObj.put("uploadMessage", "上报车辆照片不包含指定车牌号");
                     int result = commonController.dataBaseOperate("[" + uploadObj.toJSONString() + "]", "com.cn.bean.", "OrderUpload", "add", DatabaseOpt.DATA).get(0);
                     if (result == 0) {
+                        FileUnits.moveFile(servletPath + "upload/" + carImgPath + ".jpg", realPath + carImgPath + ".jpg");
                         return Units.objectToJson(-1, "信息上报成功, 您上报的车辆照片不包含指定车牌号", null);
                     } else {
                         return Units.objectToJson(-1, "信息上报失败", null);
                     }
                 }
             } else {
+                FileUnits.moveFile(servletPath + "upload/" + carImgPath + ".jpg", realPath + carImgPath + ".jpg");
                 return updateOrderInfoFinished(orderInfo.getOrderID());
             }
         } else {

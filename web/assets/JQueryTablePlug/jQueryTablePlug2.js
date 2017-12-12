@@ -131,7 +131,7 @@
             });
 
             this.$container.find("ul[class='img']").on("click", "a", function (e) {
-                console.log("img");
+                //console.log("img");
                 displayPhotoLayer($(this).html());
             });
             

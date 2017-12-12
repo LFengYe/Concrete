@@ -63,11 +63,11 @@ public class SyncGPSData implements Runnable {
                     addList.add(addObj);
                 } else {
                     CarInfo carInfo = JSONObject.parseObject(info, CarInfo.class);
-                    if (carInfo.isGPSDataChange(gpsNumber, motorcadeName, expiredDate)) {
+                    if (carInfo.isGPSDataChange(gpsNumber, motorcadeName)) {
                         //GPS平台和业务平台车辆信息不一致
                         JSONObject setObj = new JSONObject();
                         setObj.put("systemNo", gpsNumber);
-                        setObj.put("expiredDate", expiredDate);
+                        //setObj.put("expiredDate", expiredDate);
                         setObj.put("motorcadeName", motorcadeName);
                         updateList.add(setObj);
 

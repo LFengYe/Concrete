@@ -54,7 +54,7 @@ public class CarInfo {
     @FieldDescription(description = "到期时间")
     private String expiredDate;
     @FieldDescription(description = "临时车辆")
-    private boolean isTemp;
+    private int isTemp;
     @FieldDescription(description = "临时车辆", operate = "display")
     private String isTempName;
     @FieldDescription(description = "到期时间")
@@ -195,6 +195,16 @@ public class CarInfo {
             return true;
         return this.expiredDate.compareToIgnoreCase(expireDate) < 0;
     }
+    
+    public boolean isGPSDataChange(String gpsNumber, String motorcadeName) {
+        if (Units.strIsEmpty(this.systemNo))
+            return true;
+        if (this.systemNo.compareToIgnoreCase(gpsNumber) != 0)
+            return true;
+        if (Units.strIsEmpty(this.motorcadeName))
+            return true;
+        return this.motorcadeName.compareToIgnoreCase(motorcadeName) != 0;
+    }
 
     public String getGpsTime() {
         return gpsTime;
@@ -204,11 +214,11 @@ public class CarInfo {
         this.gpsTime = gpsTime;
     }
 
-    public boolean getIsTemp() {
+    public int getIsTemp() {
         return isTemp;
     }
 
-    public void setIsTemp(boolean isTemp) {
+    public void setIsTemp(int isTemp) {
         this.isTemp = isTemp;
     }
 
@@ -221,7 +231,7 @@ public class CarInfo {
     }
 
     public String getIsTempName() {
-        return (isTemp) ? "是" : "否";
+        return (isTemp == 1) ? "是" : "否";
     }
 
     public void setIsTempName(String isTempName) {

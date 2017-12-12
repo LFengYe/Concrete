@@ -11,6 +11,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.serializer.SimpleDateFormatSerializer;
+import com.baidu.aip.ocr.AipOcr;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -64,6 +65,11 @@ public class Units {
         'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W',
         'X', 'Y', 'Z', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
+    //设置APPID/AK/SK
+    public static final String APP_ID = "10457764";
+    public static final String API_KEY = "iaTQKF8aiA6yZak9Wd1K5AXG";
+    public static final String SECRET_KEY = "ZzKrilCKIqePWGxe91sDpiooy3pIsPDp";
+    
     public static final double EARTH_RADIUS = 6378137;//赤道半径(单位m)
     public static final String BAIDU_CONVERT_KEY = "UGTSrlHZTd3O95SiMiQkhLO2";
     public static final SerializerFeature[] features = {SerializerFeature.WriteMapNullValue, SerializerFeature.WriteNullNumberAsZero,
@@ -195,7 +201,7 @@ public class Units {
         String response = Units.requestWithPostWithHeader(host + path, bodyObj.toJSONString(), headers);
         //HttpResponse response = HttpUtils.doPost(host, path, method, headers, querys, bodyObj.toJSONString());
         
-        System.out.println("response:" + response);
+        //System.out.println("response:" + response);
         
         Response r = new Response();
         JSONObject responseObj = JSONObject.parseObject(response);
@@ -209,6 +215,52 @@ public class Units {
         return r;
     }
 
+    public static Response getCarNoWithImgBaiduYun(String imgPath) throws Exception {
+        // 初始化一个AipOcr
+        AipOcr client = new AipOcr(APP_ID, API_KEY, SECRET_KEY);
+
+        // 可选：设置网络连接参数
+        client.setConnectionTimeoutInMillis(2000);
+        client.setSocketTimeoutInMillis(60000);
+        
+        org.json.JSONObject object = client.plateLicense(imgPath);
+        Response response = new Response();
+        System.out.println(object.toString());
+        if (object.has("words_result")) {
+            response.setStatus(0);
+            org.json.JSONObject result = object.getJSONObject("words_result");
+            response.setData(result.getString("number"));
+        } else {
+            response.setStatus(-1);
+            response.setMessage(object.getString("error_msg"));
+        }
+        
+        return response;
+    }
+    
+    public static Response getCarNoWithImgBaiduYun(byte[] imgPath) throws Exception {
+        // 初始化一个AipOcr
+        AipOcr client = new AipOcr(APP_ID, API_KEY, SECRET_KEY);
+
+        // 可选：设置网络连接参数
+        client.setConnectionTimeoutInMillis(2000);
+        client.setSocketTimeoutInMillis(60000);
+        
+        org.json.JSONObject object = client.plateLicense(imgPath);
+        Response response = new Response();
+        System.out.println(object.toString());
+        if (object.has("words_result")) {
+            response.setStatus(0);
+            org.json.JSONObject result = object.getJSONObject("words_result");
+            response.setData(result.getString("number"));
+        } else {
+            response.setStatus(-1);
+            response.setMessage(object.getString("error_msg"));
+        }
+        
+        return response;
+    }
+    
     /**
      * 根据身份证号获取身份信息
      *
@@ -962,6 +1014,34 @@ public class Units {
         String uuid = UUID.randomUUID().toString();
         //生成jpeg图片  
         OutputStream out = new FileOutputStream(filePath + uuid + ".jpg");
+        out.write(b);
+        out.flush();
+        out.close();
+        return uuid;
+    }
+    
+    //base64字符串转化成图片  
+    public static String GenerateImage(String imgStr, String filePath, String realPath) throws Exception {   //对字节数组字符串进行Base64解码并生成图片  
+        if (imgStr == null) {//图像数据为空  
+            return null;
+        }
+        BASE64Decoder decoder = new BASE64Decoder();
+        //Base64解码  
+        byte[] b = decoder.decodeBuffer(imgStr);
+        for (int i = 0; i < b.length; ++i) {
+            if (b[i] < 0) {//调整异常数据  
+                b[i] += 256;
+            }
+        }
+        if (!new File(filePath).isDirectory()) {
+            new File(filePath).mkdirs();
+        }
+        if (!new File(realPath).isDirectory()) {
+            new File(realPath).mkdirs();
+        }
+        String uuid = UUID.randomUUID().toString();
+        //生成jpeg图片  
+        OutputStream out = new FileOutputStream(realPath + uuid + ".jpg");
         out.write(b);
         out.flush();
         out.close();
